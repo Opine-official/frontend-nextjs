@@ -1,3 +1,5 @@
+// EnterNewPasswordCard.js
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -5,33 +7,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import ForgotPasswordForm from "./ForgotPasswordForm";
+} from '@/components/ui/card';
+import EnterNewPasswordForm from './EnterNewPasswordForm';
 
 type Props = {};
 
-const ForgotPasswordCard = (props: Props) => {
+const EnterNewPasswordCard = (props: Props) => {
   return (
     <Card className="bg-white my-auto p-10">
       <CardHeader>
         <CardTitle className="mb-3">
-          <span>Forgot your password?</span>
+          <span>Enter New Password</span>
         </CardTitle>
         <CardDescription>
-          No worries, even superheroes forget where they put their <br /> capes
-          sometimes!
+          Create a new password for your account.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ForgotPasswordForm />
+        <EnterNewPasswordForm />
       </CardContent>
       <CardFooter className="flex flex-col justify-start items-start">
         <span className="text-xs mt-[2px] text-gray-500">
-          Give us your email, we&apos;ll send you an OTP.
+          Password must be at least 8 characters long and include a mix of letters, <br />numbers, and symbols.
         </span>
       </CardFooter>
     </Card>
   );
 };
 
-export default ForgotPasswordCard;
+export default EnterNewPasswordCard;

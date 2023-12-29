@@ -12,30 +12,34 @@ import {
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  otp: z.string().length(6),
+  email: z.string().email("Invalid email"),
 });
 
-const ForgotPasswordForm = () => {
+const PasswordResetOTPForm = () => {
+  const email = useSearchParams().get("email");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      otp: "",
+      email: email ? email : "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await axiosInstance.post(
-        "/user/initiatePasswordReset",
+        "/user/verifyPasswordResetCode",
         values
       );
+      console.log(response.data);
       router.push(
-        `/password-reset?email=${response.data.email}`
+        `/new-password?email=${response.data.email}&otp=${response.data.otp}`
       );
     } catch (error) {
       console.error(error);
@@ -51,12 +55,12 @@ const ForgotPasswordForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="otp"
           render={({ field }) => (
             <>
               <FormItem>
                 <FormControl>
-                  <Input placeholder="name@example.com" {...field} />
+                  <Input placeholder="OTP" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -71,4 +75,4 @@ const ForgotPasswordForm = () => {
   );
 };
 
-export default ForgotPasswordForm;
+export default PasswordResetOTPForm;

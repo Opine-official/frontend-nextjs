@@ -3,22 +3,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  emailOrUsername: z.string().min(1, "Username or email is required"),
+  emailOrUsername: z.string().email("Email is required"),
   password: z.string().min(1, "Password is required"),
 });
 
 const LoginForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,8 +33,13 @@ const LoginForm = () => {
     try {
       const response = await axiosInstance.post("/user/login", values);
       console.log(response.data);
-    } catch (error) {
-      console.error(error);
+      router.push("/feed");
+    } catch (error: unknown) {
+      // @ts-ignore
+      if(error.response.status === 401) {
+        // @ts-ignore
+        router.push("/enter-otp?email=" + error.response.data.email);
+      }
     }
   }
 
@@ -50,7 +57,7 @@ const LoginForm = () => {
             <>
               <FormItem>
                 <FormControl>
-                  <Input placeholder="Email or Username" {...field} />
+                  <Input placeholder="Email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,3 +1,4 @@
+// NewPasswordForm.js
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,31 +13,33 @@ import {
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Invalid email"),
+  otp: z.string().length(6),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
-const ForgotPasswordForm = () => {
+const EnterNewPasswordForm = () => {
+  const otp = useSearchParams().get("otp");
+  const email = useSearchParams().get("email");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: email ? email : "",
+      otp: otp ? otp : "",
+      password: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axiosInstance.post(
-        "/user/initiatePasswordReset",
-        values
-      );
-      router.push(
-        `/password-reset?email=${response.data.email}`
-      );
+      const response = await axiosInstance.post("/user/resetPassword", values);
+      console.log(response.data);
+      router.push("/login");
     } catch (error) {
       console.error(error);
     }
@@ -51,12 +54,12 @@ const ForgotPasswordForm = () => {
       >
         <FormField
           control={form.control}
-          name="email"
+          name="password"
           render={({ field }) => (
             <>
               <FormItem>
                 <FormControl>
-                  <Input placeholder="name@example.com" {...field} />
+                  <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -71,4 +74,4 @@ const ForgotPasswordForm = () => {
   );
 };
 
-export default ForgotPasswordForm;
+export default EnterNewPasswordForm;
