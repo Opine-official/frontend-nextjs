@@ -8,12 +8,13 @@ import Editor from "./Editor";
 const EditorContainer = ({ data, setData, setMetaData }) => {
   return (
     <div className="container">
-      <Input
+      <Textarea
         className="px-8 text-4xl font-bold border-none focus-visible:ring-0"
         onChange={(e) =>
           setMetaData((prev) => ({ ...prev, title: e.target.value }))
         }
         placeholder="What's the headline for your story?"
+        style={{ resize: "none" }}
       />
       <Textarea
         className="mb-2 p-8 text-gray-600 text-2xl border-none focus-visible:ring-0 overflow-hidden"
@@ -21,6 +22,7 @@ const EditorContainer = ({ data, setData, setMetaData }) => {
           setMetaData((prev) => ({ ...prev, description: e.target.value }))
         }
         placeholder="Give a brief summary of your article..."
+        style={{ resize: "none" }}
       />
       <div className="editor">
         <Editor

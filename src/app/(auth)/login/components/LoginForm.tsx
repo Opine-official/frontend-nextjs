@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter } from "next/navigation";
+import useUser from "@/app/hooks/useUser";
 
 const formSchema = z.object({
   emailOrUsername: z.string().email("Email is required"),
@@ -21,6 +22,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const router = useRouter();
+  const { refetch } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,10 +35,11 @@ const LoginForm = () => {
     try {
       const response = await axiosInstance.post("/user/login", values);
       console.log(response.data);
+      refetch();
       router.push("/feed");
     } catch (error: unknown) {
       // @ts-ignore
-      if(error.response.status === 401) {
+      if (error.response.status === 401) {
         // @ts-ignore
         router.push("/enter-otp?email=" + error.response.data.email);
       }
