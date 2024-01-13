@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import axiosInstance from "@/shared/helpers/axiosInstance";
 
 interface Author {
   name: string;
-  slug: string;
+  username: string;
 }
 
 interface TopAuthorsProps {
   authors: Author[];
 }
 
-const TopAuthors: React.FC<TopAuthorsProps> = ({ authors }) => {
+const TopAuthors = () => {
+  const [authors, setAuthors] = useState<Author[]>([]);
+  async function getTopAuthors() {
+    try {
+      const response = await axiosInstance.get("/feed/topUsers");
+      console.log(response.data);
+      setAuthors(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
+    getTopAuthors();
+  }, []);
+
   return (
     <Card>
       <CardHeader>
@@ -20,7 +36,7 @@ const TopAuthors: React.FC<TopAuthorsProps> = ({ authors }) => {
       <CardContent>
         {authors.map((author, index) => (
           <p key={index}>
-            <Link href={`/${author.slug}`}>{author.name}</Link>
+            <Link href={`/${author.username}`}>{author.name}</Link>
           </p>
         ))}
       </CardContent>
