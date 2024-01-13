@@ -21,7 +21,7 @@ const AccountDropdown = (props: Props) => {
     try {
       const response = axiosInstance.post("/user/logout");
       refetch();
-      router.push("/");
+      router.replace("/login");
     } catch (e) {
       console.error(e);
     }
@@ -36,6 +36,12 @@ const AccountDropdown = (props: Props) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => router.push("/posts")}
+          className="cursor-pointer"
+        >
+          Posts
+        </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
         <DropdownMenuItem onClick={logOut} className="cursor-pointer">
           Logout
