@@ -30,6 +30,7 @@ export default function Home() {
 
   if (user) {
     router.push("/feed");
+    return;
   }
 
   return (
