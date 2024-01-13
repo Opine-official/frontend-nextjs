@@ -29,10 +29,10 @@ const FeedPage: React.FC = () => {
     try {
       const response = await axiosInstance.get("/feed/");
       setFeedPosts(response.data.posts);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const FeedPage: React.FC = () => {
     .map((post) => ({ title: post.title, slug: post.slug }));
 
   return (
-    <div className="flex justify-center mt-10 min-h-screen">
+    <div className="flex justify-center mt-10 min-h-screen pb-10">
       <div className="flex gap-x-28">
         <div className="flex flex-col gap-y-10 items-center flex-grow-2">
           {feedPosts.map((post) => (
@@ -71,7 +71,7 @@ const FeedPage: React.FC = () => {
         <Separator orientation="vertical" className="-mr-20" />
         <div className="sidebar space-y-6 flex-grow">
           <TrendingArticles posts={trendingPosts} />
-          <TopAuthors authors={[]} />
+          <TopAuthors />
         </div>
       </div>
     </div>
