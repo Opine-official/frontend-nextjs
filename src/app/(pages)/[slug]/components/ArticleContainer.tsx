@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ArticleContainer = () => {
   const { slug } = useParams();
@@ -22,16 +23,11 @@ const ArticleContainer = () => {
         title: data.title,
         description: data.description,
         tags: data.tags,
+        author: data.user,
+        postedOn: data.createdAt,
+        updatedOn: data.updatedAt,
       });
       setData(data.content);
-      return {
-        data: data.content,
-        metaData: {
-          title: data.title,
-          description: data.description,
-          tags: data.tags,
-        },
-      };
     } catch (error) {
       console.error(error);
       router.push("/feed");
@@ -55,8 +51,33 @@ const ArticleContainer = () => {
     );
   }
 
+  function trimName(name: string): string {
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("");
+  }
+
+  const trimmedName = trimName(metaData.author.name);
+
   return (
     <div className="container">
+      <div className="pl-8 mb-6 flex items-center gap-x-2">
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>{trimmedName}</AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col">
+          <span className="text-gray-600 text-sm"> {metaData.author.name}</span>
+          <span className="text-gray-600 text-xs">
+            {new Date(metaData.updatedOn).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </span>
+        </div>
+      </div>
       <h1 className="px-8 mb-4 text-4xl font-bold">{metaData?.title}</h1>
       <p className="mb-2 px-8 text-gray-600 text-2xl">
         {metaData?.description}
