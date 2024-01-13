@@ -19,7 +19,7 @@ const EditorContainer = ({ data, setData, setMetaData, metaData }) => {
         style={{ resize: "none" }}
       />
       <Textarea
-        className="mb-2 p-8 text-gray-600 text-2xl border-none focus-visible:ring-0 overflow-hidden"
+        className="mb-2 px-8 text-gray-600 text-2xl border-none focus-visible:ring-0 overflow-hidden"
         value={metaData.description}
         onChange={(e) =>
           setMetaData((prev) => ({ ...prev, description: e.target.value }))

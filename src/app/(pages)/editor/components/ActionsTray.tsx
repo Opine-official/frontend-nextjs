@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
-import axiosInstance from "@/shared/helpers/axiosInstance";
 import useUser from "@/app/hooks/useUser";
 import { useRouter } from "next/navigation";
+import PostSettings from "./PostSettings";
+import { savePostHelper, updatePostHelper } from "../utils/helpers";
 
 type ActionsTrayProps = {
   metaData: {
@@ -26,17 +27,10 @@ const ActionsTray = ({
 
   const userId = user?.id;
 
-  async function updatePost() {
+  async function savePost() {
     setLoading(true);
     try {
-      const res = await axiosInstance.put(`/post/?slug=${slug}`, {
-        title: metaData.title,
-        description: metaData.description,
-        tags: metaData.tags,
-        content: data,
-        userId,
-      });
-      console.log(res);
+      const res = await savePostHelper(data, metaData, userId);
       router.push(`/${res.data.slug}`);
     } catch (error) {
       console.error(error);
@@ -44,16 +38,10 @@ const ActionsTray = ({
     setLoading(false);
   }
 
-  async function savePost() {
+  async function updatePost() {
     setLoading(true);
     try {
-      const res = await axiosInstance.post("/post/", {
-        title: metaData.title,
-        description: metaData.description,
-        tags: metaData.tags,
-        content: data,
-        userId,
-      });
+      const res = await updatePostHelper(data, metaData, userId, slug);
       console.log(res);
       router.push(`/${res.data.slug}`);
     } catch (error) {
@@ -63,19 +51,16 @@ const ActionsTray = ({
   }
 
   return (
-    <div className="fixed z-10 inset-x-0 bottom-0 bg-gray-200 p-4 flex justify-center shadow-md">
-      <Button disabled className="mx-2" variant="outline" onClick={savePost}>
+    <div className="fixed z-10 inset-x-0 bottom-0 bg-gray-200 p-4 flex justify-center items-center space-x-6 shadow-md">
+      <Button disabled variant="outline" onClick={savePost}>
         Save as draft
       </Button>
       {!slug ? (
-        <Button className="mx-2" onClick={savePost}>
-          Publish
-        </Button>
+        <Button onClick={savePost}>Publish</Button>
       ) : (
-        <Button className="mx-2" onClick={updatePost}>
-          Update
-        </Button>
+        <Button onClick={updatePost}>Update</Button>
       )}
+      <PostSettings />
     </div>
   );
 };
