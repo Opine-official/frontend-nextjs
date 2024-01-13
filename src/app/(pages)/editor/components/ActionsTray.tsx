@@ -12,13 +12,37 @@ type ActionsTrayProps = {
   };
   data: unknown;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  slug: string | null;
 };
 
-const ActionsTray = ({ data, metaData, setLoading }: ActionsTrayProps) => {
+const ActionsTray = ({
+  data,
+  metaData,
+  setLoading,
+  slug,
+}: ActionsTrayProps) => {
   const { user } = useUser();
   const router = useRouter();
 
   const userId = user?.id;
+
+  async function updatePost() {
+    setLoading(true);
+    try {
+      const res = await axiosInstance.put(`/post/?slug=${slug}`, {
+        title: metaData.title,
+        description: metaData.description,
+        tags: metaData.tags,
+        content: data,
+        userId,
+      });
+      console.log(res);
+      router.push(`/${res.data.slug}`);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  }
 
   async function savePost() {
     setLoading(true);
@@ -43,9 +67,15 @@ const ActionsTray = ({ data, metaData, setLoading }: ActionsTrayProps) => {
       <Button disabled className="mx-2" variant="outline" onClick={savePost}>
         Save as draft
       </Button>
-      <Button className="mx-2" onClick={savePost}>
-        Publish
-      </Button>
+      {!slug ? (
+        <Button className="mx-2" onClick={savePost}>
+          Publish
+        </Button>
+      ) : (
+        <Button className="mx-2" onClick={updatePost}>
+          Update
+        </Button>
+      )}
     </div>
   );
 };
