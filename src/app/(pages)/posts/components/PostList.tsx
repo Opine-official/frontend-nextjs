@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { Rings } from "react-loader-spinner";
 import PostItem from "./PostItem";
+import useUser from "@/app/hooks/useUser";
 
 interface PostData {
   postId: string;
@@ -20,12 +21,18 @@ interface PostData {
 const PostList: React.FC = () => {
   const [feedPosts, setFeedPosts] = useState<PostData[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useUser();
+  const userId = user?.userId;
 
   async function fetchFeedPosts() {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/feed/");
-      setFeedPosts(response.data.posts);
+      const response = await axiosInstance.get(
+        `/post/getPostsByUser?userId=${userId}`
+      );
+
+      console.log(response.data);
+      setFeedPosts(response.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -36,7 +43,7 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     fetchFeedPosts();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return (
@@ -56,7 +63,7 @@ const PostList: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-y-10 items-center py-10">
-      {feedPosts.map((post) => (
+      {feedPosts?.map((post) => (
         <PostItem
           key={post.postId}
           {...post}

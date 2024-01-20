@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import PostDeleteConfirmation from "./PostDeleteConfirmation";
 
 type Props = {
   postId: string;
@@ -55,18 +56,19 @@ const PostItem = ({
         <div className="space-x-2">
           <Button
             size="sm"
-            className="text-xs hover:shadow-lg transition duration-500"
+            className="text-xs  hover:shadow-lg transition duration-500"
             onClick={() => window.open(`/editor?slug=${slug}`)}
           >
             <FaEdit />
           </Button>
-          <Button
+          {/* <Button
             size="sm"
             className="text-xs hover:shadow-lg transition duration-500"
             onClick={handleDelete}
           >
             <MdDelete />
-          </Button>
+          </Button> */}
+          <PostDeleteConfirmation handleDelete={handleDelete} />
         </div>
         <div className="flex space-x-2">
           {tags.map((tag, index) => (

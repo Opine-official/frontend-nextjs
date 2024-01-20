@@ -10,9 +10,7 @@ import {
 import { MdOutlineSettings } from "react-icons/md";
 import PostSettingsForm from "./PostSettingsForm";
 
-type Props = {};
-
-const PostSettings = (props: Props) => {
+const PostSettings = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>

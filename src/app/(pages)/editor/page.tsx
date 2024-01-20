@@ -1,64 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
 import EditorContainer from "./components/EditorContainer";
 import ActionsTray from "./components/ActionsTray";
 import { ProgressBar } from "react-loader-spinner";
-import axiosInstance from "@/shared/helpers/axiosInstance";
-import { useSearchParams, useRouter } from "next/navigation";
-
-const INITIAL_META_DATA = {
-  title: "",
-  description: "",
-  tags: ["untagged"],
-};
-
-const INITIAL_DATA = {
-  time: new Date().getTime(),
-  blocks: [
-    {
-      type: "paragraph",
-      data: {
-        text: "Start writing..",
-      },
-    },
-  ],
-};
+import useEditor from "./hooks/useEditor";
 
 function Page() {
-  const slug = useSearchParams().get("slug") ?? null;
-
-  const router = useRouter();
-
-  const [metaData, setMetaData] = useState(INITIAL_META_DATA);
-  const [data, setData] = useState(INITIAL_DATA);
-  const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  async function fetchArticle() {
-    try {
-      const res = await axiosInstance.get(`/post/?slug=${slug}`);
-      console.log(res.data);
-      const data = res.data;
-      setMetaData({
-        title: data.title,
-        description: data.description,
-        tags: data.tags,
-      });
-      setData(data.content);
-    } catch (error) {
-      console.error(error);
-      router.push("/posts");
-    }
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    if (slug) {
-      fetchArticle();
-    } else {
-      setLoading(false);
-    }
-  }, []);
+  const { saving, loading } = useEditor();
 
   if (saving || loading) {
     return (
@@ -86,20 +33,10 @@ function Page() {
   }
 
   return (
-    <div>
-      <EditorContainer
-        data={data}
-        setData={setData}
-        setMetaData={setMetaData}
-        metaData={metaData}
-      />
-      <ActionsTray
-        metaData={metaData}
-        data={data}
-        setLoading={setSaving}
-        slug={slug}
-      />
-    </div>
+    <>
+      <EditorContainer />
+      <ActionsTray />
+    </>
   );
 }
 

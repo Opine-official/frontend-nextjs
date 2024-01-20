@@ -3,10 +3,13 @@ import "../styles/style.css";
 import "../styles/article.css";
 import { Textarea } from "@/components/ui/textarea";
 import dynamic from "next/dynamic";
+import useEditor from "../hooks/useEditor";
 
 const Editor = dynamic(() => import("./Editor"), { ssr: false });
 
-const EditorContainer = ({ data, setData, setMetaData, metaData }) => {
+const EditorContainer = () => {
+  const { data, setData, setMetaData, metaData } = useEditor();
+
   return (
     <div className="container">
       <Textarea

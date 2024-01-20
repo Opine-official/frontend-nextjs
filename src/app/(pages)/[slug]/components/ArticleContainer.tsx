@@ -7,6 +7,8 @@ import { useParams, useRouter } from "next/navigation";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CommentSection from "./CommentSection";
+import { FcLike } from "react-icons/fc";
 
 const ArticleContainer = () => {
   const { slug } = useParams();
@@ -17,9 +19,9 @@ const ArticleContainer = () => {
   async function fetchArticle() {
     try {
       const res = await axiosInstance.get(`/post/?slug=${slug}`);
-      console.log(res.data);
       const data = res.data;
       setMetaData({
+        postId: data.postId,
         title: data.title,
         description: data.description,
         tags: data.tags,
@@ -85,6 +87,10 @@ const ArticleContainer = () => {
 
       <div className="editor">
         {data && <Editor data={data} editorblock="editorjs-container" />}
+      </div>
+      <div className="flex gap-x-2 pl-8">
+        <FcLike size={24} />
+        <CommentSection postId={metaData.postId} />
       </div>
     </div>
   );

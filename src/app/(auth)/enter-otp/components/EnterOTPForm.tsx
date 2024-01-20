@@ -13,15 +13,21 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email"),
   otp: z.string().length(6),
 });
 
-const EnterOTPForm = () => {
+const EnterOTPForm = ({
+  isCountdownComplete,
+}: {
+  isCountdownComplete: boolean;
+}) => {
   const email = useSearchParams().get("email");
   const router = useRouter();
+  const [error, setError] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,6 +43,7 @@ const EnterOTPForm = () => {
       console.log(response.data);
       router.push("/login");
     } catch (error) {
+      setError(true);
       console.error(error);
     }
   }
@@ -62,10 +69,11 @@ const EnterOTPForm = () => {
             </>
           )}
         />
-        <Button size="sm" type="submit">
+        <Button disabled={isCountdownComplete} size="sm" type="submit">
           Submit
         </Button>
       </form>
+      {error && <p className="text-sm mt-2 text-red-500">The OTP is invalid</p>}
     </Form>
   );
 };

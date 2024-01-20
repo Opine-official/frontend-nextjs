@@ -1,6 +1,11 @@
 import axiosInstance from "@/shared/helpers/axiosInstance";
 
-export async function savePostHelper(data, metaData, userId): Promise<any> {
+export async function savePostHelper({
+  data,
+  metaData,
+  userId,
+  isDraft,
+}: any): Promise<any> {
   try {
     const res = await axiosInstance.post("/post/", {
       title: metaData.title,
@@ -8,6 +13,7 @@ export async function savePostHelper(data, metaData, userId): Promise<any> {
       tags: metaData.tags,
       content: data,
       userId,
+      isDraft: isDraft,
     });
     console.log(res);
     return res;
@@ -20,12 +26,12 @@ export async function savePostHelper(data, metaData, userId): Promise<any> {
   }
 }
 
-export async function updatePostHelper(
+export async function updatePostHelper({
   data,
   metaData,
   userId,
-  slug
-): Promise<any> {
+  slug,
+}: any): Promise<any> {
   try {
     const res = await axiosInstance.put(`/post/?slug=${slug}`, {
       title: metaData.title,

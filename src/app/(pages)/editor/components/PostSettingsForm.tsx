@@ -13,9 +13,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import useEditor from "../hooks/useEditor";
 
 const FormSchema = z.object({
   tags: z.array(
@@ -31,6 +31,8 @@ const FormSchema = z.object({
 });
 
 export default function PostSettingsForm() {
+  const { saving, saveSettings } = useEditor();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,14 +47,20 @@ export default function PostSettingsForm() {
   const { setValue } = form;
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    alert(JSON.stringify(data, null, 2));
+    const tagTexts = data?.tags?.map((tag) => tag?.text);
+
+    saveSettings({
+      tags: tagTexts,
+      slug: data.slug,
+      isThreadsEnabled: data.isThreadsEnabled,
+    });
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-start "
+        className="space-y-8 flex flex-col items-start"
       >
         <FormField
           control={form.control}
@@ -61,6 +69,7 @@ export default function PostSettingsForm() {
             <FormItem className="flex flex-col items-start">
               <FormLabel className="text-left">Tags</FormLabel>
               <FormControl>
+                {/* @ts-ignore */}
                 <TagInput
                   {...field}
                   maxTags={5}
@@ -119,7 +128,9 @@ export default function PostSettingsForm() {
           )}
         />
 
-        <Button type="submit">Save</Button>
+        <Button disabled={saving} type="submit">
+          {!saving ? "Save" : "Saving..."}
+        </Button>
       </form>
     </Form>
   );

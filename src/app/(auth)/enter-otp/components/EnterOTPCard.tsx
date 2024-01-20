@@ -7,23 +7,52 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import EnterOTPForm from "./EnterOTPForm";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/shared/helpers/axiosInstance";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Countdown from "react-countdown";
+import { useState } from "react";
+import { toast } from "sonner";
 
 type Props = {};
-
+const renderer = ({ minutes, seconds, completed }: any) => {
+  return (
+    <span>
+      Your OTP expires in {minutes}:{seconds}
+    </span>
+  );
+};
 
 const EnterOTPCard = (props: Props) => {
   const email = useSearchParams().get("email");
+  const router = useRouter();
 
- async function resendOTP() {
+  if (!email) {
+    router.push("/");
+  }
+
+  const [isCountdownComplete, setIsCountDownComplete] = useState(false);
+
+  async function resendOTP() {
     try {
-     const response = await axiosInstance.post("/user/resendOTP", { email: email });
+      const response = await axiosInstance.post("/user/resendOTP", {
+        email: email,
+      });
+
+      setIsCountDownComplete(false);
+
+      toast("OTP sent successfully", {
+        description: "Check your email",
+        action: {
+          label: "Close",
+          onClick: () => console.log("Closing.."),
+        },
+      });
       console.log(response.data);
-    } catch(e) {
-      console.error(e)
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -38,15 +67,32 @@ const EnterOTPCard = (props: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <EnterOTPForm />
+        <EnterOTPForm isCountdownComplete={isCountdownComplete} />
       </CardContent>
       <CardFooter className="flex flex-col justify-start items-start">
-        <span className="text-xs mt-[2px] text-gray-500">
-          Your OTP expires in 1 hr.
-        </span>
-          <Button onClick={resendOTP} variant="ghost" className="p-0">
-            Resend OTP
-          </Button>
+        <div>
+          <span className="text-xs mt-[2px] text-gray-500">
+            {!isCountdownComplete ? (
+              <Countdown
+                autoStart={!isCountdownComplete}
+                renderer={renderer}
+                className="font-bold"
+                date={Date.now() + 300000}
+                onComplete={() => setIsCountDownComplete(true)}
+              />
+            ) : (
+              "Your OTP expired."
+            )}
+            <Button
+              disabled={!isCountdownComplete}
+              onClick={resendOTP}
+              variant="ghost"
+              className="p-0 block"
+            >
+              Resend OTP
+            </Button>
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
