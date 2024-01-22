@@ -33,7 +33,7 @@ const AdminForm = () => {
     try {
       const response = await axiosInstance.post("/admin/login", values);
       console.log(response.data);
-      router.push("/dashboard");
+      router.push("/admin/dashboard");
     } catch (error: unknown) {
       console.error(error);
     }
