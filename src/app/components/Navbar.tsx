@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
               <Link href="/feed">My Feed</Link>
             </li>
             <li>
-              <Link href="/thread">Threads</Link>
+              <Link href="/threads">Threads</Link>
             </li>
             <li>
               <Link href="/channels">Channels</Link>

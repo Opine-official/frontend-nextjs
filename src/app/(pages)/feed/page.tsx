@@ -18,6 +18,7 @@ interface PostData {
   };
   tags: string[];
   slug: string;
+  postedOn: string;
 }
 
 const FeedPage: React.FC = () => {

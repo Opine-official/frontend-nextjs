@@ -17,7 +17,7 @@ const TopAuthors = () => {
   async function getTopAuthors() {
     try {
       const response = await axiosInstance.get("/feed/topUsers");
-      console.log(response.data);
+      // console.log(response.data);
       setAuthors(response.data);
     } catch (error) {
       console.log(error);

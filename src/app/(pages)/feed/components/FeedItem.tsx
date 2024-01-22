@@ -1,8 +1,6 @@
-import React from "react";
 import Link from "next/link";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -11,6 +9,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 type Props = {
   postId: string;
@@ -24,9 +25,20 @@ type Props = {
   };
   tags: string[];
   slug: string;
+  postedOn: string;
 };
 
-const FeedItem = ({ postId, title, description, user, tags, slug }: Props) => {
+const FeedItem = ({
+  postId,
+  title,
+  description,
+  user,
+  tags,
+  slug,
+  postedOn,
+}: Props) => {
+  const date = dayjs(postedOn).fromNow();
+
   return (
     <Link href={`/${slug}`}>
       <Card className="w-[800px] hover:shadow-lg transition duration-500">
@@ -37,7 +49,10 @@ const FeedItem = ({ postId, title, description, user, tags, slug }: Props) => {
               <AvatarFallback>{user?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm">{user?.name}</span>
+              <div className="flex gap-x-2 justify-between items-center">
+                <span className="text-sm">{user?.name}</span>
+                <p className="text-xs text-gray-500">{date}</p>
+              </div>
               <span className="text-sm text-gray-500">
                 {user?.bio || "Code whisperer"}
               </span>

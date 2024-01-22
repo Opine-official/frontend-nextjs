@@ -25,7 +25,7 @@ const DeleteConfirmation = ({ commentId }: Props) => {
   const handleDelete = async () => {
     try {
       const response = await axiosInstance.delete(
-        `/threads/?commentId=${commentId}`
+        `/threads/comment/?commentId=${commentId}`
       );
 
       deleteComment(commentId);

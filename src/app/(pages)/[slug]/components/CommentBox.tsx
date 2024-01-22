@@ -94,7 +94,7 @@ export default function CommentBox({ postId }: props) {
     }
 
     try {
-      const response = await axiosInstance.post("/threads/", {
+      const response = await axiosInstance.post("/threads/comment", {
         postId: postId,
         content: comment,
       });

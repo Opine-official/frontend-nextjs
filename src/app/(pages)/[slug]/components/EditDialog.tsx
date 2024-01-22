@@ -30,7 +30,7 @@ const EditDialog = ({ commentId, content }: Props) => {
     }
 
     try {
-      const response = await axiosInstance.put("/threads/", {
+      const response = await axiosInstance.put("/threads/comment", {
         commentId: commentId,
         content: comment.trim(),
       });
