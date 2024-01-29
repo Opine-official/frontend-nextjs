@@ -35,14 +35,24 @@ const AccountDropdown = (props: Props) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => router.push("/profile")}
+          className="cursor-pointer"
+        >
+          Profile
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => router.push("/posts")}
           className="cursor-pointer"
         >
           Posts
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => router.push("/settings")}
+          className="cursor-pointer"
+        >
+          Settings
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={logOut} className="cursor-pointer">
           Logout
         </DropdownMenuItem>

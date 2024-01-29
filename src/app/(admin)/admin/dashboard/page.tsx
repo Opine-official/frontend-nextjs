@@ -1,13 +1,15 @@
 import React from "react";
+import { VerticalTab } from "./components/VerticalTab";
 
-const FeedPage: React.FC = () => {
+const AdminDashboard: React.FC = () => {
   return (
-    <>
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-4xl">Welcome, to admin Dashboard.</h1>
+    <div className="px-40 py-20">
+      <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
+      <div className="flex mt-10 h-screen ">
+        <VerticalTab />
       </div>
-    </>
+    </div>
   );
 };
 
-export default FeedPage;
+export default AdminDashboard;
