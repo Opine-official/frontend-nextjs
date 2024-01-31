@@ -1,23 +1,32 @@
+import axiosInstance from "@/shared/helpers/axiosInstance";
 import { DataTable } from "../DataTable/data-table";
-import { Category, columns } from "./columns";
+import { columns } from "./columns";
 import { NewCategoryDialogue } from "./NewCategoryDialogue";
+import { useEffect, useState } from "react";
 
 type Props = {};
 
-function getData(): Category[] {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      name: "Technology",
-      channels: ["TypeScript", "AI", "pending"],
-    },
-    // ...
-  ];
-}
-
 const CategoryManagement = (props: Props) => {
-  const data = getData();
+  const [data, setData] = useState([]);
+
+  async function getData() {
+    try {
+      const response = await axiosInstance.get("/channel/categories");
+
+      const tableData = response.data.categories.map((cat: any) => {
+        return {
+          id: cat.categoryId,
+          name: cat.name,
+        };
+      });
+
+      setData(tableData);
+    } catch (e) {}
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <>

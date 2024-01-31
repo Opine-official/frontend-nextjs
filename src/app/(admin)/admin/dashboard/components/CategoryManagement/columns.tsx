@@ -11,6 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axiosInstance from "@/shared/helpers/axiosInstance";
+import ShowChannelsDialog from "./ShowChannelsDialog";
 
 export type Category = {
   id: string;
@@ -31,15 +33,7 @@ export const columns: ColumnDef<Category>[] = [
     accessorKey: "channels",
     header: "Channels",
     cell: ({ row }) => {
-      return (
-        <Button
-          onClick={() => {
-            /* handle view action here */
-          }}
-        >
-          View
-        </Button>
-      );
+      return <ShowChannelsDialog categoryId={row.original.id} />;
     },
   },
   {
@@ -61,11 +55,10 @@ export const columns: ColumnDef<Category>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(category.id)}
             >
-              Copy payment ID
+              Copy category ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Modify category</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -27,11 +27,17 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   allowDuplicates,
   children,
 }) => {
+  console.log(autocompleteOptions);
   return (
     <Command className="border">
       {children}
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
+        <span>
+          {autocompleteOptions.map((option) => {
+            return option.text;
+          })}
+        </span>
         <CommandGroup heading="Suggestions">
           {autocompleteOptions.map((option) => (
             <CommandItem key={option.id}>

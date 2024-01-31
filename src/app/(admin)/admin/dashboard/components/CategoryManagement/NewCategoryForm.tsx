@@ -7,13 +7,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Tag, TagInput } from "@/components/tag/tag-input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Input } from "@/components/ui/input";
+import AsyncSelect from "react-select/async";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 
 const FormSchema = z.object({
@@ -29,7 +29,7 @@ const FormSchema = z.object({
   ),
 });
 
-export default function NewCategoryForm() {
+export default function NewCategoryForm({ setOpen }: any) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -39,17 +39,38 @@ export default function NewCategoryForm() {
     },
   });
 
-  const [channels, setChannels] = React.useState<Tag[]>([]);
-
   const { setValue } = form;
+
+  const promiseOptions = (inputValue: string) =>
+    new Promise<any[]>((resolve, reject) => {
+      axiosInstance
+        .get(`/channel/?searchTerm=${inputValue}`)
+        .then((response) => {
+          if (response.status === 200) {
+            const channels = response.data.channels.map((channel: any) => ({
+              value: channel.channelId,
+              label: channel.name,
+            }));
+            resolve(channels);
+          } else {
+            reject(`Unexpected response status: ${response.status}`);
+          }
+        })
+        .catch((error) => {
+          console.error("Error occurred while fetching data: ", error);
+          reject(error);
+        });
+    });
 
   async function saveCategory(data: z.infer<typeof FormSchema>) {
     try {
       const response = await axiosInstance.post("/channel/category/", {
-        name: data.name,
-        description: data.description,
-        channels: data?.channels?.map((chan) => chan?.text),
+        name: data?.name,
+        description: data?.description,
+        channels: data.channels.map((chan) => chan?.id),
       });
+
+      setOpen(false);
     } catch (e) {
       console.log(e);
     }
@@ -106,36 +127,19 @@ export default function NewCategoryForm() {
             <FormItem className="flex flex-col items-start">
               <FormLabel className="text-left">Channels</FormLabel>
               <FormControl>
-                {/* @ts-ignore */}
-                <TagInput
-                  {...field}
-                  tags={channels}
-                  enableAutocomplete={true}
-                  autocompleteOptions={[
-                    {
-                      id: "1",
-                      text: "Technology",
-                    },
-                    {
-                      id: "2",
-                      text: "Science",
-                    },
-                    {
-                      id: "3",
-                      text: "Politics",
-                    },
-                    {
-                      id: "4",
-                      text: "Sports",
-                    },
-                    {
-                      id: "5",
-                      text: "Entertainment",
-                    },
-                  ]}
-                  setTags={(newTags) => {
-                    setChannels(newTags);
-                    setValue("channels", newTags as [Tag, ...Tag[]]);
+                <AsyncSelect
+                  isMulti
+                  cacheOptions
+                  defaultOptions
+                  loadOptions={promiseOptions}
+                  className="w-full"
+                  onChange={(selectedOptions) => {
+                    const newChannels = selectedOptions.map((option) => ({
+                      id: option.value,
+                      text: option.label,
+                    }));
+
+                    setValue("channels", newChannels);
                   }}
                 />
               </FormControl>

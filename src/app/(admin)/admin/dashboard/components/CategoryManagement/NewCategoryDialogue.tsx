@@ -6,12 +6,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import NewCategoryForm from "./NewCategoryForm";
+import React from "react";
 
 export const NewCategoryDialogue = () => {
+  const [open, setOpen] = React.useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button>New Category</Button>
       </DialogTrigger>
@@ -19,7 +22,7 @@ export const NewCategoryDialogue = () => {
         <DialogHeader>
           <DialogTitle className="mb-5">Create new category</DialogTitle>
           <DialogDescription>
-            <NewCategoryForm />
+            <NewCategoryForm setOpen={setOpen} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
