@@ -59,6 +59,7 @@ export const columns: ColumnDef<Category>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Modify category</DropdownMenuItem>
+            <DropdownMenuItem>Delete category</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

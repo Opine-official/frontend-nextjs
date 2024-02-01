@@ -17,12 +17,27 @@ type Props = {
 const ShowChannelsDialog = ({ categoryId }: Props) => {
   const [channels, setChannels] = useState([]);
 
+  const removeChannel = async (channelId: string) => {
+    try {
+      const response = await axiosInstance.patch(
+        "channel/channels/remove-category/",
+        {
+          categoryId,
+          channelId,
+        }
+      );
+      console.log(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const getChannelsByCategoryId = async () => {
     try {
       const response = await axiosInstance.get(
         `https://opine/api/channel/channelsByCategory/?categoryId=${categoryId}`
       );
-      console.log(response.data.channels);
+      // console.log(response.data.channels);
       setChannels(response.data.channels);
     } catch (e) {
       console.error(e);
@@ -50,7 +65,7 @@ const ShowChannelsDialog = ({ categoryId }: Props) => {
                 >
                   <span>{channel.name}</span>
                   <button
-                    // onClick={() => removeChannel(channel.channelId)}
+                    onClick={() => removeChannel(channel.channelId)}
                     className="bg-red-500 text-xs text-white rounded-full h-4 w-4 flex items-center justify-center"
                   >
                     X

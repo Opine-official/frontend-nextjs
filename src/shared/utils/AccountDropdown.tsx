@@ -15,7 +15,8 @@ type Props = {};
 
 const AccountDropdown = (props: Props) => {
   const router = useRouter();
-  const { refetch } = useUser();
+  const { user, refetch } = useUser();
+  const username = user?.username;
 
   function logOut() {
     try {
@@ -36,7 +37,7 @@ const AccountDropdown = (props: Props) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => router.push("/profile")}
+          onClick={() => router.push(`/u/${username}`)}
           className="cursor-pointer"
         >
           Profile

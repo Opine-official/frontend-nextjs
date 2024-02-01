@@ -39,9 +39,6 @@ const Post = ({ title, description, slug, user }: Props) => {
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
-        {/* <CardFooter className="flex justify-between">
-          <Button>Read more</Button>
-        </CardFooter> */}
       </Card>
     </Link>
   );

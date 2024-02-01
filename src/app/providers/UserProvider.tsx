@@ -9,7 +9,7 @@ const UserProvider = ({ children }: any) => {
 
   async function fetchUser() {
     try {
-      const response = await axiosInstance.get("/user/details");
+      const response = await axiosInstance.get("/user/");
 
       setUser(response?.data);
     } catch (error) {

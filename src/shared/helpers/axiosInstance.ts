@@ -6,4 +6,10 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+export const axiosInstanceMultipart = axios.create({
+  baseURL: "https://opine/api",
+  headers: { "Content-Type": "multipart/form-data" },
+  withCredentials: true,
+});
+
 export default axiosInstance;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { AlertDestructive } from "./AlertDestructive";
 import useUser from "@/app/hooks/useUser";
-import axiosInstance from "@/shared/helpers/axiosInstance";
+import { axiosInstanceMultipart } from "@/shared/helpers/axiosInstance";
 
 type Props = {};
 
@@ -19,8 +19,20 @@ const ProfileSchema = z.object({
   instagram: z.string().optional(),
 });
 
+type Profile = {
+  name: string;
+  website: string;
+  username: string;
+  twitter: string;
+  bio: string;
+  linkedin: string;
+  location: string;
+  instagram: string;
+  [key: string]: string;
+};
+
 export default function ProfileSettings(props: Props) {
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<Profile>({
     name: "",
     website: "",
     username: "",
@@ -31,9 +43,33 @@ export default function ProfileSettings(props: Props) {
     instagram: "",
   });
 
+  const [selectedFile, setSelectedFile] = useState();
+
+  const handleFileChange = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
   async function updateProfile() {
     try {
-      const response = await axiosInstance.post("/user/update", profile);
+      const formData = new FormData();
+      Object.keys(profile).forEach((key) => {
+        formData.append(key, profile[key]);
+      });
+
+      if (selectedFile) {
+        formData.append("profile", selectedFile);
+      } else {
+        formData.append("profile", "");
+      }
+      // @ts-ignore
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+
+      const response = await axiosInstanceMultipart.post(
+        "/user/update",
+        formData
+      );
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -69,19 +105,8 @@ export default function ProfileSettings(props: Props) {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     await updateProfile();
-
-    // const result = ProfileSchema.safeParse(profile);
-
-    // console.log(result);
-
-    // if (!result.success) {
-    //   // If validation fails, set the errors to the state
-    //   setErrors(result.error.formErrors.fieldErrors);
-    // } else {
-    //   // If validation succeeds, you can proceed with form submission
-    //   // submitForm(result.data);
-    // }
   };
 
   return (
@@ -191,8 +216,14 @@ export default function ProfileSettings(props: Props) {
             onChange={handleChange("instagram")}
           />
         </div>
+        <div className="flex flex-col">
+          <label className="mb-1 text-sm font-medium" htmlFor="instagram">
+            Profile picture
+          </label>
+          <Input id="profile" type="file" onChange={handleFileChange} />
+        </div>
       </div>
-      <Button onClick={updateProfile} className="mt-6" type="submit">
+      <Button className="mt-6" type="submit">
         Submit
       </Button>
     </form>
