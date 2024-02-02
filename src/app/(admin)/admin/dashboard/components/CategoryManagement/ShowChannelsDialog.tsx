@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import axiosInstance from "@/shared/helpers/axiosInstance";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
   categoryId: string;
@@ -16,6 +16,18 @@ type Props = {
 
 const ShowChannelsDialog = ({ categoryId }: Props) => {
   const [channels, setChannels] = useState([]);
+
+  const getChannelsByCategoryId = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(
+        `channel/channelsByCategory/?categoryId=${categoryId}`
+      );
+      // console.log(response.data.channels);
+      setChannels(response.data.channels);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [channels]);
 
   const removeChannel = async (channelId: string) => {
     try {
@@ -27,18 +39,11 @@ const ShowChannelsDialog = ({ categoryId }: Props) => {
         }
       );
       console.log(response.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const getChannelsByCategoryId = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `https://opine/api/channel/channelsByCategory/?categoryId=${categoryId}`
-      );
-      // console.log(response.data.channels);
-      setChannels(response.data.channels);
+      setChannels((prevChannels: any) => {
+        return prevChannels.filter(
+          (channel: { channelId: string }) => channel.channelId !== channelId
+        );
+      });
     } catch (e) {
       console.error(e);
     }
@@ -46,12 +51,12 @@ const ShowChannelsDialog = ({ categoryId }: Props) => {
 
   useEffect(() => {
     getChannelsByCategoryId();
-  }, []);
+  }, [getChannelsByCategoryId]);
 
   return (
     <Dialog>
       <DialogTrigger>
-        <Button>View</Button>
+        <Button variant="ghost">View</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

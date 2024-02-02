@@ -17,6 +17,7 @@ import AsyncSelect from "react-select/async";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 
 const FormSchema = z.object({
+  categoryId: z.string(),
   name: z.string(),
   description: z.string(),
   channels: z.array(
@@ -29,12 +30,17 @@ const FormSchema = z.object({
   ),
 });
 
-export default function NewChannelForm({ setOpen }: any) {
+export default function ModifyCategoryForm({
+  refreshData,
+  category,
+  setOpen,
+}: any) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      categoryId: category.id,
+      name: category.name,
+      description: category.description,
       channels: [],
     },
   });
@@ -62,14 +68,15 @@ export default function NewChannelForm({ setOpen }: any) {
         });
     });
 
-  async function saveChannel(data: z.infer<typeof FormSchema>) {
+  async function updateCategory(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await axiosInstance.post("/channel/", {
+      const response = await axiosInstance.put("/channel/category/", {
+        categoryId: category.id,
         name: data?.name,
         description: data?.description,
         channels: data.channels.map((chan) => chan?.id),
       });
-
+      refreshData();
       setOpen(false);
     } catch (e) {
       console.log(e);
@@ -77,7 +84,7 @@ export default function NewChannelForm({ setOpen }: any) {
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    saveChannel(data);
+    updateCategory(data);
   }
 
   return (
@@ -91,13 +98,13 @@ export default function NewChannelForm({ setOpen }: any) {
           name="name"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel className="text-left">Channel Name</FormLabel>
+              <FormLabel className="text-left">Category Name</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
               <FormDescription>
-                Enter the name of the channel. For example,
-                &quot;Typescript&quot;. Channel names have to be unique.
+                Enter the name of the category. For example,
+                &quot;Technology&quot;. Category names have to be unique.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -108,13 +115,13 @@ export default function NewChannelForm({ setOpen }: any) {
           name="description"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel className="text-left">Channel Description</FormLabel>
+              <FormLabel className="text-left">Category Description</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
               <FormDescription>
-                Enter a brief description of the channel. For example,
-                &quot;Everything typescript related&quot;.
+                Enter a brief description of the category. For example,
+                &quot;Everything technology related&quot;.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -125,7 +132,7 @@ export default function NewChannelForm({ setOpen }: any) {
           name="channels"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel className="text-left">Categories</FormLabel>
+              <FormLabel className="text-left">Add Channels</FormLabel>
               <FormControl>
                 <AsyncSelect
                   isMulti
@@ -145,13 +152,13 @@ export default function NewChannelForm({ setOpen }: any) {
               </FormControl>
               <FormMessage />
               <FormDescription>
-                Enter the categories this channel would come under. You can add
-                multiple categories.
+                Enter the channels associated with this category. You can add
+                multiple channels.
               </FormDescription>
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">Update</Button>
       </form>
     </Form>
   );

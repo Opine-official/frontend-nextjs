@@ -17,6 +17,7 @@ import AsyncSelect from "react-select/async";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 
 const FormSchema = z.object({
+  channelId: z.string(),
   name: z.string(),
   description: z.string(),
   channels: z.array(
@@ -29,12 +30,17 @@ const FormSchema = z.object({
   ),
 });
 
-export default function NewChannelForm({ setOpen }: any) {
+export default function ModifyChannelForm({
+  refreshData,
+  channel,
+  setOpen,
+}: any) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      channelId: channel.id,
+      name: channel.name,
+      description: channel.description,
       channels: [],
     },
   });
@@ -62,14 +68,15 @@ export default function NewChannelForm({ setOpen }: any) {
         });
     });
 
-  async function saveChannel(data: z.infer<typeof FormSchema>) {
+  async function updateChannel(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await axiosInstance.post("/channel/", {
+      const response = await axiosInstance.put("/channel/channel/", {
+        channelId: channel.id,
         name: data?.name,
         description: data?.description,
         channels: data.channels.map((chan) => chan?.id),
       });
-
+      refreshData();
       setOpen(false);
     } catch (e) {
       console.log(e);
@@ -77,7 +84,7 @@ export default function NewChannelForm({ setOpen }: any) {
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    saveChannel(data);
+    updateChannel(data);
   }
 
   return (
@@ -97,7 +104,7 @@ export default function NewChannelForm({ setOpen }: any) {
               </FormControl>
               <FormDescription>
                 Enter the name of the channel. For example,
-                &quot;Typescript&quot;. Channel names have to be unique.
+                &quot;Technology&quot;. Channel names have to be unique.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -114,7 +121,7 @@ export default function NewChannelForm({ setOpen }: any) {
               </FormControl>
               <FormDescription>
                 Enter a brief description of the channel. For example,
-                &quot;Everything typescript related&quot;.
+                &quot;Everything technology related&quot;.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -125,7 +132,7 @@ export default function NewChannelForm({ setOpen }: any) {
           name="channels"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel className="text-left">Categories</FormLabel>
+              <FormLabel className="text-left">Add Categories</FormLabel>
               <FormControl>
                 <AsyncSelect
                   isMulti
@@ -151,7 +158,7 @@ export default function NewChannelForm({ setOpen }: any) {
             </FormItem>
           )}
         />
-        <Button type="submit">Create</Button>
+        <Button type="submit">Update</Button>
       </form>
     </Form>
   );

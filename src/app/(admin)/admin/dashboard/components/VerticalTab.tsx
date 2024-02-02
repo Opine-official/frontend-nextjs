@@ -7,7 +7,7 @@ import ChannelManagement from "./ChannelManagement/ChannelManagement";
 type Props = {};
 
 export const VerticalTab = (props: Props) => {
-  const [currentTab, setCurrentTab] = useState("user-management");
+  const [currentTab, setCurrentTab] = useState("category-management");
 
   const renderContent = () => {
     switch (currentTab) {
@@ -31,6 +31,7 @@ export const VerticalTab = (props: Props) => {
             currentTab === "user-management" ? "bg-gray-200" : ""
           }`}
           variant="ghost"
+          disabled
           onClick={() => setCurrentTab("user-management")}
         >
           User Management

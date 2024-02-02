@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,21 +6,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import NewChannelForm from "./NewChannelForm";
 import React from "react";
+import { FiEdit2 } from "react-icons/fi";
+import ModifyChannelForm from "./ModifyChannelForm";
 
-export const NewChannelDialogue = () => {
+export const ModifyChannelDialogue = ({ refreshData, channel }: any) => {
+  // console.log(channel.name);
+
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>New Channel</Button>
+        <FiEdit2 />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-5">Create new channel</DialogTitle>
+          <DialogTitle className="mb-5">Modify channel</DialogTitle>
           <DialogDescription>
-            <NewChannelForm setOpen={setOpen} />
+            <ModifyChannelForm
+              refreshData={refreshData}
+              channel={channel}
+              setOpen={setOpen}
+            />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

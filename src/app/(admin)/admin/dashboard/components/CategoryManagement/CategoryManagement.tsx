@@ -17,6 +17,7 @@ const CategoryManagement = (props: Props) => {
         return {
           id: cat.categoryId,
           name: cat.name,
+          description: cat.description,
         };
       });
 
@@ -31,7 +32,7 @@ const CategoryManagement = (props: Props) => {
   return (
     <>
       <NewCategoryDialogue />
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns(getData)} data={data} />
     </>
   );
 };
