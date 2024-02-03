@@ -20,7 +20,7 @@ const FormSchema = z.object({
   channelId: z.string(),
   name: z.string(),
   description: z.string(),
-  channels: z.array(
+  categories: z.array(
     z
       .object({
         id: z.string(),
@@ -41,7 +41,7 @@ export default function ModifyChannelForm({
       channelId: channel.id,
       name: channel.name,
       description: channel.description,
-      channels: [],
+      categories: [],
     },
   });
 
@@ -50,14 +50,14 @@ export default function ModifyChannelForm({
   const promiseOptions = (inputValue: string) =>
     new Promise<any[]>((resolve, reject) => {
       axiosInstance
-        .get(`/channel/?searchTerm=${inputValue}`)
+        .get(`/channel/search/categories?searchTerm=${inputValue}`)
         .then((response) => {
           if (response.status === 200) {
-            const channels = response.data.channels.map((channel: any) => ({
-              value: channel.channelId,
-              label: channel.name,
+            const categories = response.data.categories.map((cat: any) => ({
+              value: cat.categoryId,
+              label: cat.name,
             }));
-            resolve(channels);
+            resolve(categories);
           } else {
             reject(`Unexpected response status: ${response.status}`);
           }
@@ -70,11 +70,11 @@ export default function ModifyChannelForm({
 
   async function updateChannel(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await axiosInstance.put("/channel/channel/", {
+      const response = await axiosInstance.put("/channel/", {
         channelId: channel.id,
         name: data?.name,
         description: data?.description,
-        channels: data.channels.map((chan) => chan?.id),
+        categories: data.categories.map((chan) => chan?.id),
       });
       refreshData();
       setOpen(false);
@@ -129,7 +129,7 @@ export default function ModifyChannelForm({
         />
         <FormField
           control={form.control}
-          name="channels"
+          name="categories"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
               <FormLabel className="text-left">Add Categories</FormLabel>
@@ -146,7 +146,7 @@ export default function ModifyChannelForm({
                       text: option.label,
                     }));
 
-                    setValue("channels", newChannels);
+                    setValue("categories", newChannels);
                   }}
                 />
               </FormControl>

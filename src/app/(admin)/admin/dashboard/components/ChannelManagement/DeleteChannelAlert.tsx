@@ -23,7 +23,7 @@ function DeleteChannelAlert({ refreshData, channel }: any) {
   async function deleteChannel() {
     try {
       const response = await axiosInstance.delete(
-        `/channel/channel/?channelId=${channel.id}`
+        `/channel/?channelId=${channel.id}`
       );
       refreshData();
     } catch (e) {

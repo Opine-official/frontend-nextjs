@@ -27,7 +27,7 @@ const ShowChannelsDialog = ({ categoryId }: Props) => {
     } catch (e) {
       console.error(e);
     }
-  }, [channels]);
+  }, []);
 
   const removeChannel = async (channelId: string) => {
     try {
@@ -44,6 +44,7 @@ const ShowChannelsDialog = ({ categoryId }: Props) => {
           (channel: { channelId: string }) => channel.channelId !== channelId
         );
       });
+      getChannelsByCategoryId();
     } catch (e) {
       console.error(e);
     }

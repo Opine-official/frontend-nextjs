@@ -1,5 +1,5 @@
 "use client";
-import { FiCopy, FiTrash2 } from "react-icons/fi";
+import { FiCopy } from "react-icons/fi";
 import { ColumnDef } from "@tanstack/react-table";
 import ShowCategoriesDialog from "./ShowCategoriesDialog";
 import { ModifyChannelDialogue } from "./ModifyChannelDialogue";
@@ -8,7 +8,7 @@ import DeleteChannelAlert from "./DeleteChannelAlert";
 export type Category = {
   id: string;
   name: string;
-  channels: string[];
+  categories: string[];
 };
 
 const ActionCell = ({ channel, refreshData }: any) => {
@@ -37,10 +37,10 @@ export const columns = (refreshData: () => void): ColumnDef<Category>[] => [
   },
   { accessorKey: "description", header: "Description" },
   {
-    accessorKey: "channels",
-    header: "Channels",
+    accessorKey: "categories",
+    header: "Categories",
     cell: ({ row }) => {
-      return <ShowCategoriesDialog categoryId={row.original.id} />;
+      return <ShowCategoriesDialog channelId={row.original.id} />;
     },
   },
   {

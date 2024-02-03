@@ -11,40 +11,41 @@ import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useCallback, useEffect, useState } from "react";
 
 type Props = {
-  categoryId: string;
+  channelId: string;
 };
 
-const ShowCategoriesDialog = ({ categoryId }: Props) => {
+const ShowCategoriesDialog = ({ channelId }: Props) => {
   const [categories, setCategories] = useState([]);
 
   const getCategoriesByChannelId = useCallback(async () => {
     try {
       const response = await axiosInstance.get(
-        `categories/categoriesByCategory/?categoryId=${categoryId}`
+        `/channel/categoriesByChannel/?channelId=${channelId}`
       );
-      // console.log(response.data.categories);
+      console.log(response.data.categories);
       setCategories(response.data.categories);
     } catch (e) {
       console.error(e);
     }
-  }, [categories]);
+  }, []);
 
-  const removeCategory = async (categoriesId: string) => {
+  const removeCategory = async (categoryId: string) => {
     try {
       const response = await axiosInstance.patch(
-        "categories/categoriess/remove-category/",
+        "channel/channels/remove-category",
         {
+          channelId,
           categoryId,
-          categoriesId,
         }
       );
       console.log(response.data);
       setCategories((prevCategories: any) => {
         return prevCategories.filter(
-          (categories: { categoriesId: string }) =>
-            categories.categoriesId !== categoriesId
+          (categories: { categoryId: string }) =>
+            categories.categoryId !== categoryId
         );
       });
+      getCategoriesByChannelId();
     } catch (e) {
       console.error(e);
     }
