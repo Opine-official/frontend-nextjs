@@ -5,6 +5,7 @@ import { z } from "zod";
 import { AlertDestructive } from "./AlertDestructive";
 import useUser from "@/app/hooks/useUser";
 import { axiosInstanceMultipart } from "@/shared/helpers/axiosInstance";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -44,6 +45,7 @@ export default function ProfileSettings(props: Props) {
   });
 
   const [selectedFile, setSelectedFile] = useState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFileChange = (event: any) => {
     setSelectedFile(event.target.files[0]);
@@ -51,6 +53,7 @@ export default function ProfileSettings(props: Props) {
 
   async function updateProfile() {
     try {
+      setIsSubmitting(true);
       const formData = new FormData();
       Object.keys(profile).forEach((key) => {
         formData.append(key, profile[key]);
@@ -74,6 +77,14 @@ export default function ProfileSettings(props: Props) {
     } catch (error) {
       console.error(error);
     }
+    setIsSubmitting(false);
+    toast("Success", {
+      description: "Profile settings have been saved successfully",
+      action: {
+        label: "Close",
+        onClick: () => console.log("Closing.."),
+      },
+    });
   }
 
   const { user } = useUser();
@@ -130,6 +141,7 @@ export default function ProfileSettings(props: Props) {
             placeholder="Aravind Sanjeev"
             value={profile.name}
             onChange={handleChange("name")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -142,6 +154,7 @@ export default function ProfileSettings(props: Props) {
             placeholder="www.aravindsanjeev.com"
             value={profile.website}
             onChange={handleChange("website")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -154,6 +167,7 @@ export default function ProfileSettings(props: Props) {
             placeholder="aravsanj"
             value={profile.username}
             onChange={handleChange("username")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -166,6 +180,7 @@ export default function ProfileSettings(props: Props) {
             placeholder="@aravsanj"
             value={profile.twitter}
             onChange={handleChange("twitter")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -178,6 +193,7 @@ export default function ProfileSettings(props: Props) {
             name="bio"
             value={profile.bio}
             onChange={handleChange("bio")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -190,6 +206,7 @@ export default function ProfileSettings(props: Props) {
             name="linkedin"
             value={profile.linkedin}
             onChange={handleChange("linkedin")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -202,6 +219,7 @@ export default function ProfileSettings(props: Props) {
             placeholder="Kerala, India"
             value={profile.location}
             onChange={handleChange("location")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
@@ -214,13 +232,19 @@ export default function ProfileSettings(props: Props) {
             placeholder="@aravsanj"
             value={profile.instagram}
             onChange={handleChange("instagram")}
+            disabled={isSubmitting}
           />
         </div>
         <div className="flex flex-col">
           <label className="mb-1 text-sm font-medium" htmlFor="instagram">
             Profile picture
           </label>
-          <Input id="profile" type="file" onChange={handleFileChange} />
+          <Input
+            disabled={isSubmitting}
+            id="profile"
+            type="file"
+            onChange={handleFileChange}
+          />
         </div>
       </div>
       <Button className="mt-6" type="submit">

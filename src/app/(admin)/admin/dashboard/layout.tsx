@@ -18,10 +18,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   async function verifyAdmin() {
     try {
-      const res = await axiosInstance.get("/admin/");
+      const res = await axiosInstance.get("/admin/verify");
     } catch (error) {
       console.error(error);
-      // router.push("/admin/");
+      router.push("/admin/");
     }
   }
 

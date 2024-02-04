@@ -16,6 +16,8 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import useEditor from "../hooks/useEditor";
+import AsyncSelect from "react-select/async";
+import axiosInstance from "@/shared/helpers/axiosInstance";
 
 const FormSchema = z.object({
   tags: z.array(
@@ -42,7 +44,26 @@ export default function PostSettingsForm() {
     },
   });
 
-  const [tags, setTags] = React.useState<Tag[]>([]);
+  const promiseOptions = (inputValue: string) =>
+    new Promise<any[]>((resolve, reject) => {
+      axiosInstance
+        .get(`/channel/?searchTerm=${inputValue}`)
+        .then((response) => {
+          if (response.status === 200) {
+            const channels = response.data.channels.map((channel: any) => ({
+              value: channel.channelId,
+              label: channel.name,
+            }));
+            resolve(channels);
+          } else {
+            reject(`Unexpected response status: ${response.status}`);
+          }
+        })
+        .catch((error) => {
+          console.error("Error occurred while fetching data: ", error);
+          reject(error);
+        });
+    });
 
   const { setValue } = form;
 
@@ -70,7 +91,7 @@ export default function PostSettingsForm() {
               <FormLabel className="text-left">Tags</FormLabel>
               <FormControl>
                 {/* @ts-ignore */}
-                <TagInput
+                {/* <TagInput
                   {...field}
                   maxTags={5}
                   placeholder="Start typing to add a tag"
@@ -79,6 +100,22 @@ export default function PostSettingsForm() {
                   setTags={(newTags) => {
                     setTags(newTags);
                     setValue("tags", newTags as [Tag, ...Tag[]]);
+                  }}
+                /> */}
+
+                <AsyncSelect
+                  isMulti
+                  cacheOptions
+                  defaultOptions
+                  loadOptions={promiseOptions}
+                  className="w-full"
+                  onChange={(selectedOptions) => {
+                    const newChannels = selectedOptions.map((option) => ({
+                      id: option.value,
+                      text: option.label,
+                    }));
+
+                    setValue("tags", newChannels);
                   }}
                 />
               </FormControl>

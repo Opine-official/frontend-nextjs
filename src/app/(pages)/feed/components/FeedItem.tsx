@@ -18,6 +18,7 @@ type Props = {
   title: string;
   description: string;
   user: {
+    profile: string | null;
     name: string;
     email: string;
     username: string;
@@ -45,7 +46,7 @@ const FeedItem = ({
         <CardHeader>
           <div className="flex gap-x-2 items-center mb-4">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={user.profile ? user.profile : ""} />
               <AvatarFallback>{user?.name[0]}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">

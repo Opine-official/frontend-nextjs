@@ -12,6 +12,7 @@ interface PostData {
   title: string;
   description: string;
   user: {
+    profile: string;
     name: string;
     email: string;
     username: string;

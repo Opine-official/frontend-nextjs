@@ -44,14 +44,14 @@ export default function NewChannelForm({ setOpen }: any) {
   const promiseOptions = (inputValue: string) =>
     new Promise<any[]>((resolve, reject) => {
       axiosInstance
-        .get(`/channel/?searchTerm=${inputValue}`)
+        .get(`/channel/search/categories?searchTerm=${inputValue}`)
         .then((response) => {
           if (response.status === 200) {
-            const channels = response.data.channels.map((channel: any) => ({
-              value: channel.channelId,
-              label: channel.name,
+            const categories = response.data.categories.map((cat: any) => ({
+              value: cat.categoryId,
+              label: cat.name,
             }));
-            resolve(channels);
+            resolve(categories);
           } else {
             reject(`Unexpected response status: ${response.status}`);
           }
