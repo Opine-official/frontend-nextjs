@@ -19,7 +19,7 @@ import axiosInstance from "@/shared/helpers/axiosInstance";
 const FormSchema = z.object({
   name: z.string(),
   description: z.string(),
-  channels: z.array(
+  categories: z.array(
     z
       .object({
         id: z.string(),
@@ -35,7 +35,7 @@ export default function NewChannelForm({ setOpen }: any) {
     defaultValues: {
       name: "",
       description: "",
-      channels: [],
+      categories: [],
     },
   });
 
@@ -67,7 +67,7 @@ export default function NewChannelForm({ setOpen }: any) {
       const response = await axiosInstance.post("/channel/", {
         name: data?.name,
         description: data?.description,
-        channels: data.channels.map((chan) => chan?.id),
+        categories: data.categories.map((cat) => cat?.id),
       });
 
       setOpen(false);
@@ -122,7 +122,7 @@ export default function NewChannelForm({ setOpen }: any) {
         />
         <FormField
           control={form.control}
-          name="channels"
+          name="categories"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
               <FormLabel className="text-left">Categories</FormLabel>
@@ -134,12 +134,12 @@ export default function NewChannelForm({ setOpen }: any) {
                   loadOptions={promiseOptions}
                   className="w-full"
                   onChange={(selectedOptions) => {
-                    const newChannels = selectedOptions.map((option) => ({
+                    const newCats = selectedOptions.map((option) => ({
                       id: option.value,
                       text: option.label,
                     }));
 
-                    setValue("channels", newChannels);
+                    setValue("categories", newCats);
                   }}
                 />
               </FormControl>
