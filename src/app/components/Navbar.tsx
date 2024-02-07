@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
               <Link href="/channels">Channels</Link>
             </li>
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/search">Search</Link>
             </li>
           </ul>
         </div>
