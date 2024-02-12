@@ -14,6 +14,7 @@ import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter } from "next/navigation";
 import useUser from "@/app/hooks/useUser";
+import { LOGIN } from "@/shared/helpers/endpoints";
 
 const formSchema = z.object({
   emailOrUsername: z.string().email("Email is required"),
@@ -33,7 +34,7 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axiosInstance.post("/user/login", values);
+      const response = await axiosInstance.post(LOGIN, values);
       console.log(response.data);
       refetch();
       router.push("/feed");

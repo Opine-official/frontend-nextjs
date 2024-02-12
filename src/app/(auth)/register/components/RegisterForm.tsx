@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter } from "next/navigation";
+import { REGISTER } from "@/shared/helpers/endpoints";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -42,10 +43,9 @@ const RegisterForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axiosInstance.post("/user/register", values);
+      const response = await axiosInstance.post(REGISTER, values);
       console.log(response.data);
       router.push(`/enter-otp?email=${response.data.email}`);
-
     } catch (error) {
       console.error(error);
     }

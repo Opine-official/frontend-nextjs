@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { GET_USER } from "@/shared/helpers/endpoints";
 
 const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const UserProvider = ({ children }: any) => {
 
   async function fetchUser() {
     try {
-      const response = await axiosInstance.get("/user/");
+      const response = await axiosInstance.get(GET_USER);
 
       setUser(response?.data);
     } catch (error) {

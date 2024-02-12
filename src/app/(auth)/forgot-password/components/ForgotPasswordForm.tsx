@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter } from "next/navigation";
+import { INITIATE_PASSWORD_RESET } from "@/shared/helpers/endpoints";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -31,12 +32,10 @@ const ForgotPasswordForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await axiosInstance.post(
-        "/user/initiatePasswordReset",
+        INITIATE_PASSWORD_RESET,
         values
       );
-      router.push(
-        `/password-reset?email=${response.data.email}`
-      );
+      router.push(`/password-reset?email=${response.data.email}`);
     } catch (error) {
       console.error(error);
     }

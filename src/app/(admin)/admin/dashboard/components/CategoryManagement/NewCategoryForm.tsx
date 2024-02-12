@@ -15,6 +15,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import AsyncSelect from "react-select/async";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { toast } from "sonner";
 
 const FormSchema = z.object({
   name: z.string(),
@@ -29,7 +30,7 @@ const FormSchema = z.object({
   ),
 });
 
-export default function NewCategoryForm({ setOpen }: any) {
+export default function NewCategoryForm({ setOpen, refetchData }: any) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -69,10 +70,18 @@ export default function NewCategoryForm({ setOpen }: any) {
         description: data?.description,
         channels: data.channels.map((chan) => chan?.id),
       });
+      refetchData();
 
       setOpen(false);
     } catch (e) {
       console.log(e);
+      toast("Operation failed", {
+        description: "Category name must be unique",
+        action: {
+          label: "Close",
+          onClick: () => console.log("Closing.."),
+        },
+      });
     }
   }
 

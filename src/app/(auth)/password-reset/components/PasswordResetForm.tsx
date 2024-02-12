@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter, useSearchParams } from "next/navigation";
+import { VERIFY_PASSWORD_RESET_CODE } from "@/shared/helpers/endpoints";
 
 const formSchema = z.object({
   otp: z.string().length(6),
@@ -34,7 +35,7 @@ const PasswordResetOTPForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await axiosInstance.post(
-        "/user/verifyPasswordResetCode",
+        VERIFY_PASSWORD_RESET_CODE,
         values
       );
       console.log(response.data);

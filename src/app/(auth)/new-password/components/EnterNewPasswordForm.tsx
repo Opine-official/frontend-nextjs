@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter, useSearchParams } from "next/navigation";
+import { RESET_PASSWORD } from "@/shared/helpers/endpoints";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -37,7 +38,7 @@ const EnterNewPasswordForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axiosInstance.post("/user/resetPassword", values);
+      const response = await axiosInstance.post(RESET_PASSWORD, values);
       console.log(response.data);
       router.push("/login");
     } catch (error) {

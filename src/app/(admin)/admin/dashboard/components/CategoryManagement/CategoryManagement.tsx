@@ -25,13 +25,15 @@ const CategoryManagement = (props: Props) => {
     } catch (e) {}
   }
 
+  const refetchData = () => getData();
+
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <>
-      <NewCategoryDialogue />
+      <NewCategoryDialogue refetchData={refetchData} />
       <DataTable columns={columns(getData)} data={data} />
     </>
   );

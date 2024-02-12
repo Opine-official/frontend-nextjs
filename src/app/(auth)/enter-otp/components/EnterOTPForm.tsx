@@ -14,6 +14,7 @@ import * as z from "zod";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { VERIFY_EMAIL } from "@/shared/helpers/endpoints";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -39,7 +40,7 @@ const EnterOTPForm = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axiosInstance.post("/user/verifyEmail", values);
+      const response = await axiosInstance.post(VERIFY_EMAIL, values);
       console.log(response.data);
       router.push("/login");
     } catch (error) {

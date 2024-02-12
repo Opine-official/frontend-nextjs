@@ -10,7 +10,7 @@ import {
 import NewChannelForm from "./NewChannelForm";
 import React from "react";
 
-export const NewChannelDialogue = () => {
+export const NewChannelDialogue = ({ refetchData }: any) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -21,7 +21,7 @@ export const NewChannelDialogue = () => {
         <DialogHeader>
           <DialogTitle className="mb-5">Create new channel</DialogTitle>
           <DialogDescription>
-            <NewChannelForm setOpen={setOpen} />
+            <NewChannelForm refetchData={refetchData} setOpen={setOpen} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

@@ -10,6 +10,7 @@ import { RiAccountCircleFill } from "react-icons/ri";
 import axiosInstance from "../helpers/axiosInstance";
 import { useRouter } from "next/navigation";
 import useUser from "@/app/hooks/useUser";
+import { LOGOUT } from "../helpers/endpoints";
 
 type Props = {};
 
@@ -20,7 +21,7 @@ const AccountDropdown = (props: Props) => {
 
   function logOut() {
     try {
-      const response = axiosInstance.post("/user/logout");
+      const response = axiosInstance.post(LOGOUT);
       refetch();
       router.replace("/login");
     } catch (e) {

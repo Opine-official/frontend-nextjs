@@ -8,10 +8,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import NewCategoryForm from "./NewCategoryForm";
-import React from "react";
+import React, { useEffect } from "react";
 
-export const NewCategoryDialogue = () => {
+export const NewCategoryDialogue = ({ refetchData }: any) => {
   const [open, setOpen] = React.useState(false);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
@@ -21,7 +22,7 @@ export const NewCategoryDialogue = () => {
         <DialogHeader>
           <DialogTitle className="mb-5">Create new category</DialogTitle>
           <DialogDescription>
-            <NewCategoryForm setOpen={setOpen} />
+            <NewCategoryForm refetchData={refetchData} setOpen={setOpen} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

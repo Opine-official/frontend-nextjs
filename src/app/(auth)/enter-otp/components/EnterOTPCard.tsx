@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Countdown from "react-countdown";
 import { useState } from "react";
 import { toast } from "sonner";
+import { RESEND_OTP } from "@/shared/helpers/endpoints";
 
 type Props = {};
 const renderer = ({ minutes, seconds, completed }: any) => {
@@ -37,7 +38,7 @@ const EnterOTPCard = (props: Props) => {
 
   async function resendOTP() {
     try {
-      const response = await axiosInstance.post("/user/resendOTP", {
+      const response = await axiosInstance.post(RESEND_OTP, {
         email: email,
       });
 

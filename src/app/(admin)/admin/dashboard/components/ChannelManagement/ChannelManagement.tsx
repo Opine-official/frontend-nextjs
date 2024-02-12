@@ -25,13 +25,15 @@ const ChannelManagement = (props: Props) => {
     } catch (e) {}
   }
 
+  const refetchData = () => getData();
+
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <>
-      <NewChannelDialogue />
+      <NewChannelDialogue refetchData={refetchData} />
       <DataTable columns={columns(getData)} data={data} />
     </>
   );
