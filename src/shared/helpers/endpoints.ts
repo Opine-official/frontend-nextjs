@@ -22,11 +22,14 @@ export const DELETE_CATEGORY = (categoryId: string) => `/channel/category/?categ
 export const GET_CHANNELS_BY_CATEGORY = (categoryId: string) => `/channel/channelsByCategory/?categoryId=${categoryId}`;
 export const REMOVE_CHANNEL_FROM_CATEGORY = "/channel/channels/remove-category/";
 export const GET_ALL_CHANNELS = "/channel/channels";
+export const GET_CHANNEL = (channelName: string) => `/channel/?channelName=${channelName}`;
 export const CREATE_CHANNEL = "/channel/";
 export const UPDATE_CHANNEL = (channelId: string) => `/channel/channel/?channelId=${channelId}`;
 export const DELETE_CHANNEL = (channelId: string) => `/channel/channel/?channelId=${channelId}`;
 export const GET_CATEGORIES_BY_CHANNEL = (channelId: string) => `/channel/categoriesByChannel/?channelId=${channelId}`;
 export const REMOVE_CATEGORY_FROM_CHANNEL = "/channel/categories/remove-channel/";
+export const GET_POSTS_BY_CHANNEL = (channelName: string) => `/channel/postsByChannel/?channelName=${channelName}`
+export const SEARCH_CHANNELS = (searchTerm: string) => `/search/categories?channelName=${searchTerm}`
 
 // Post related endpoints
 export const CREATE_POST = "/post";
