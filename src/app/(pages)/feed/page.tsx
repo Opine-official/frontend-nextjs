@@ -6,6 +6,8 @@ import TrendingArticles from "./components/TrendingArticles";
 import { Separator } from "@/components/ui/separator";
 import { Rings } from "react-loader-spinner";
 import TopAuthors from "./components/TopAuthors";
+import { GET_FEED } from "@/shared/helpers/endpoints";
+import useUser from "@/app/hooks/useUser";
 
 interface PostData {
   postId: string;
@@ -25,11 +27,13 @@ interface PostData {
 const FeedPage: React.FC = () => {
   const [feedPosts, setFeedPosts] = useState<PostData[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useUser();
+  const userId = user?.userId;
 
   async function fetchFeedPosts() {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/feed/");
+      const response = await axiosInstance.get(GET_FEED(userId));
       setFeedPosts(response.data.posts);
       setLoading(false);
     } catch (error) {
