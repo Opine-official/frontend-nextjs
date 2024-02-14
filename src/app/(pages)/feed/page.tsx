@@ -35,10 +35,10 @@ const FeedPage: React.FC = () => {
     try {
       const response = await axiosInstance.get(GET_FEED(userId));
       setFeedPosts(response.data.posts);
-      setLoading(false);
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
