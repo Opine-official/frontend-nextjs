@@ -31,6 +31,7 @@ export const REMOVE_CATEGORY_FROM_CHANNEL = "/channel/categories/remove-channel/
 export const GET_POSTS_BY_CHANNEL = (channelName: string) => `/channel/postsByChannel/?channelName=${channelName}`
 export const SEARCH_CHANNELS = (searchTerm: string) => `/search/categories?channelName=${searchTerm}`
 export const SUBSCRIBE_CHANNEL = "/channel/subscribe";
+export const UNSUBSCRIBE_CHANNEL = (userId: string, channelId: string) => `/channel/subscribe/?userId=${userId}&&channelId=${channelId}`
 
 // Post related endpoints
 export const CREATE_POST = "/post";

@@ -4,6 +4,7 @@ import {
   GET_CHANNEL,
   GET_POSTS_BY_CHANNEL,
   SUBSCRIBE_CHANNEL,
+  UNSUBSCRIBE_CHANNEL,
 } from "@/shared/helpers/endpoints";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ export default function Page() {
   const [posts, setPosts] = useState([]);
   const [channelDetails, setChannelDetails] = useState<any>();
   const [loading, setLoading] = useState(true);
+  const [isSubscribeActive, setIsSubscribeActive] = useState(false);
 
   const { user } = useUser();
   const userId = user?.userId;
@@ -59,15 +61,51 @@ export default function Page() {
   }
 
   async function subscribeChannel() {
+    setIsSubscribeActive(true);
     try {
       const response = await axiosInstance.post(SUBSCRIBE_CHANNEL, {
         userId: userId,
         channelId: channelDetails.channel.channelId,
         channelName: channelDetails.channel.name,
       });
+
+      setChannelDetails((prev: any) => {
+        return {
+          ...prev,
+          channel: {
+            ...prev.channel,
+            subscriberCount: prev.channel.subscriberCount + 1,
+          },
+          isUserSubscribed: true,
+        };
+      });
     } catch (e: unknown) {
       console.error(e);
     }
+    setIsSubscribeActive(false);
+  }
+
+  async function unsubscribeChannel() {
+    setIsSubscribeActive(true);
+    try {
+      const response = await axiosInstance.delete(
+        UNSUBSCRIBE_CHANNEL(userId, channelDetails.channel.channelId)
+      );
+
+      setChannelDetails((prev: any) => {
+        return {
+          ...prev,
+          channel: {
+            ...prev.channel,
+            subscriberCount: prev.channel.subscriberCount - 1,
+          },
+          isUserSubscribed: false,
+        };
+      });
+    } catch (e: unknown) {
+      console.error(e);
+    }
+    setIsSubscribeActive(false);
   }
 
   useEffect(() => {
@@ -94,11 +132,18 @@ export default function Page() {
           {channelDetails?.channel?.description}
         </p>
         <span className="text-center my-2">
-          {channelDetails?.channel?.subscriberCount} subscribers
+          {channelDetails?.channel?.subscriberCount === 1
+            ? "1 subscriber"
+            : `${channelDetails?.channel?.subscriberCount} subscribers`}
         </span>
         <Button
           variant={channelDetails.isUserSubscribed ? "outline" : "default"}
-          onClick={subscribeChannel}
+          disabled={isSubscribeActive}
+          onClick={
+            channelDetails.isUserSubscribed
+              ? unsubscribeChannel
+              : subscribeChannel
+          }
           className="text-center my-4"
         >
           {channelDetails.isUserSubscribed ? "Unsubscribe" : "Subscribe"}
