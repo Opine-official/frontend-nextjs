@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import useEditor from "../hooks/useEditor";
 import AsyncSelect from "react-select/async";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { SEARCH_CHANNELS } from "@/shared/helpers/endpoints";
 
 const FormSchema = z.object({
   tags: z.array(
@@ -47,7 +48,7 @@ export default function PostSettingsForm() {
   const promiseOptions = (inputValue: string) =>
     new Promise<any[]>((resolve, reject) => {
       axiosInstance
-        .get(`/channel/?searchTerm=${inputValue}`)
+        .get(SEARCH_CHANNELS(inputValue))
         .then((response) => {
           if (response.status === 200) {
             const channels = response.data.channels.map((channel: any) => ({
