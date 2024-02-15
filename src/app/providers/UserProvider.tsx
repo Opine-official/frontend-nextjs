@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { GET_USER } from "@/shared/helpers/endpoints";
+import { socket } from "../../configs/socket.config";
 
 const UserProvider = ({ children }: any) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchUser() {
@@ -28,6 +29,11 @@ const UserProvider = ({ children }: any) => {
       console.error(error);
     }
   }, []);
+
+  useEffect(() => {
+    socket?.connect();
+    socket?.emit("join", user?.userId);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser, refetch, isLoading }}>
