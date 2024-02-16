@@ -33,6 +33,15 @@ const UserProvider = ({ children }: any) => {
   useEffect(() => {
     socket?.connect();
     socket?.emit("join", user?.userId);
+
+    socket?.on("new-notification", () => {
+      console.log("testing");
+    });
+
+    return () => {
+      socket?.off("new-notification");
+      socket?.disconnect();
+    };
   }, [user]);
 
   return (
