@@ -5,6 +5,7 @@ type UserContext = {
   setUser: Dispatch<SetStateAction<any>>;
   refetch: () => void;
   isLoading: boolean;
+  notifications: any[];
 };
 
 const UserContext = createContext<UserContext>({} as UserContext);

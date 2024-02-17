@@ -6,6 +6,7 @@ import useUser from "@/app/hooks/useUser";
 import { Skeleton } from "@/components/ui/skeleton";
 import AccountDropdown from "@/shared/utils/AccountDropdown";
 import { AiFillBell } from "react-icons/ai";
+import { NotificationPopover } from "./NotificationPopover";
 
 type Props = {};
 
@@ -26,7 +27,7 @@ const AuthButtons = (props: Props) => {
         >
           Write
         </Button>
-        <AiFillBell size={24} />
+        <NotificationPopover />
         <AccountDropdown />
       </div>
     );

@@ -57,3 +57,6 @@ export const SEARCH_TAG = (tag: string) => `/search/tag/?tag=${tag}`;
 
 // Thread related endpoints
 export const GET_THREADS = "/threads/";
+
+// Notification related endpoints
+export const GET_NOTIFICATIONS = "/notification/user";

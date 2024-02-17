@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import UserContext from "../contexts/UserContext";
 import axiosInstance from "@/shared/helpers/axiosInstance";
-import { GET_USER } from "@/shared/helpers/endpoints";
+import { GET_NOTIFICATIONS, GET_USER } from "@/shared/helpers/endpoints";
 import { socket } from "../../configs/socket.config";
 
 const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState<any>(null);
+  const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchUser() {
@@ -22,9 +23,20 @@ const UserProvider = ({ children }: any) => {
 
   const refetch = () => fetchUser();
 
+  async function fetchNewNotifications() {
+    try {
+      const response = await axiosInstance.get(GET_NOTIFICATIONS);
+      console.log(response.data);
+      setNotifications(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     try {
       fetchUser();
+      fetchNewNotifications();
     } catch (error) {
       console.error(error);
     }
@@ -35,7 +47,8 @@ const UserProvider = ({ children }: any) => {
     socket?.emit("join", user?.userId);
 
     socket?.on("new-notification", () => {
-      console.log("testing");
+      console.log("new-notification triggered");
+      fetchNewNotifications();
     });
 
     return () => {
@@ -45,7 +58,9 @@ const UserProvider = ({ children }: any) => {
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, refetch, isLoading }}>
+    <UserContext.Provider
+      value={{ user, setUser, refetch, isLoading, notifications }}
+    >
       {children}
     </UserContext.Provider>
   );
