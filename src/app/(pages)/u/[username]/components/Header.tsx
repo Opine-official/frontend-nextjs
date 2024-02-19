@@ -1,7 +1,15 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { FaInstagram, FaLink, FaLinkedin, FaTwitter } from "react-icons/fa";
+import {
+  FaFlag,
+  FaInstagram,
+  FaLink,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
 import { IconBaseProps } from "react-icons";
+import { ReportDialog } from "./ReportDialog";
+import useUser from "@/app/hooks/useUser";
 
 type Props = {
   user: any;
@@ -16,6 +24,12 @@ const IconWrapper: React.FC<IconProps> = ({ icon: Icon, ...props }) => (
 );
 
 const Header = ({ user }: Props) => {
+  const profileUserId = user.userId;
+  const { user: LoggedInUser } = useUser();
+
+  const isLogged = !!LoggedInUser;
+  const isOwnProfile = LoggedInUser?.userId === profileUserId;
+
   return (
     <>
       <Avatar className="h-16 w-16">
@@ -61,9 +75,9 @@ const Header = ({ user }: Props) => {
           </a>
         </div>
       </div>
-      {/* <Button disabled className="bg-gray-200 text-gray-700">
-        Follow (30k)
-      </Button> */}
+      {isLogged && !isOwnProfile && (
+        <ReportDialog reportedUserId={profileUserId} />
+      )}
     </>
   );
 };
