@@ -3,16 +3,17 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import CategoryManagement from "./CategoryManagement/CategoryManagement";
 import ChannelManagement from "./ChannelManagement/ChannelManagement";
+import UserManagement from "./UserManagement/UserManagement";
 
 type Props = {};
 
 export const VerticalTab = (props: Props) => {
-  const [currentTab, setCurrentTab] = useState("category-management");
+  const [currentTab, setCurrentTab] = useState("user-management");
 
   const renderContent = () => {
     switch (currentTab) {
       case "user-management":
-        return <div>User management</div>;
+        return <UserManagement />;
       case "category-management":
         return <CategoryManagement />;
       case "channel-management":
@@ -31,7 +32,6 @@ export const VerticalTab = (props: Props) => {
             currentTab === "user-management" ? "bg-gray-200" : ""
           }`}
           variant="ghost"
-          disabled
           onClick={() => setCurrentTab("user-management")}
         >
           User Management
