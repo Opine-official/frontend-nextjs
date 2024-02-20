@@ -65,7 +65,7 @@ export function ReportDialog({ reportedUserId }: any) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={() => setOpen(true)}>
+    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger>
         <Button
           variant="outline"
