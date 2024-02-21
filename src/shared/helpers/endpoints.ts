@@ -9,6 +9,7 @@ export const VERIFY_PASSWORD_RESET_CODE = "/user/verifyPasswordResetCode";
 export const RESET_PASSWORD = "/user/resetPassword";
 export const GET_USER = "/user/";
 export const GET_USER_BY_USERNAME = (username: string) => `/user/?username=${username}`;
+export const REPORT_USER = "/user/report";
 
 // Admin related endpoints
 export const ADMIN_LOGIN = "/admin/login";
@@ -40,6 +41,7 @@ export const UPDATE_POST = (slug: string) => `/post/?slug=${slug}`;
 export const DELETE_POST = (slug: string) => `/post/?slug=${slug}`;
 export const GET_POSTS_BY_USER = (userId: string) => `/post/postsByUser/?userId=${userId}`;
 export const GET_POSTS_BY_USERNAME = (username: string) => `/post/postsByUsername/?username=${username}`;
+export const REPORT_POST = "/post/report";
 
 // Comment related endpoints
 export const CREATE_COMMENT = "/threads/comment";

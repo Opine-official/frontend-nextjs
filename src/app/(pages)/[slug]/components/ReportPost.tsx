@@ -27,6 +27,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import useUser from "@/app/hooks/useUser";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { REPORT_POST } from "@/shared/helpers/endpoints";
 
 const FormSchema = z.object({
   reportType: z.enum(
@@ -38,7 +39,7 @@ const FormSchema = z.object({
   otherDetails: z.string().optional(),
 });
 
-export function ReportPost({ reportedUserId }: any) {
+export function ReportPost({ postId }: any) {
   const [open, setOpen] = useState(false);
 
   const { user } = useUser();
@@ -50,8 +51,8 @@ export function ReportPost({ reportedUserId }: any) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await axiosInstance.post("/user/report", {
-        reportedUserId,
+      const response = await axiosInstance.post(REPORT_POST, {
+        reportedPostId: postId,
         reporterUserId,
         reason: data.reportType,
         isOtherReason: data.reportType === "other",

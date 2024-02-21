@@ -8,15 +8,17 @@ import axiosInstance from "@/shared/helpers/axiosInstance";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CommentSection from "./CommentSection";
-import { FcLike } from "react-icons/fc";
-import { ReportDialog } from "../../u/[username]/components/ReportDialog";
 import { ReportPost } from "./ReportPost";
+import useUser from "@/app/hooks/useUser";
 
 const ArticleContainer = () => {
   const { slug } = useParams();
+  const { user } = useUser();
   const router = useRouter();
   const [metaData, setMetaData] = useState(null);
   const [data, setData] = useState(null);
+
+  const userId = user?.userId;
 
   async function fetchArticle() {
     try {
@@ -93,7 +95,7 @@ const ArticleContainer = () => {
       <div className="flex gap-x-2 pl-8">
         {/* <FcLike size={24} /> */}
         <CommentSection postId={metaData.postId} />
-        <ReportPost reportedUserId={"profileUserId"} />
+        <ReportPost reporterUserId={userId} postId={metaData.postId} />
       </div>
     </div>
   );

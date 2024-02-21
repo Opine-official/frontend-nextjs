@@ -27,6 +27,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import useUser from "@/app/hooks/useUser";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { REPORT_USER } from "@/shared/helpers/endpoints";
 
 const FormSchema = z.object({
   reportType: z.enum(
@@ -50,7 +51,7 @@ export function ReportDialog({ reportedUserId }: any) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await axiosInstance.post("/user/report", {
+      const response = await axiosInstance.post(REPORT_USER, {
         reportedUserId,
         reporterUserId,
         reason: data.reportType,
