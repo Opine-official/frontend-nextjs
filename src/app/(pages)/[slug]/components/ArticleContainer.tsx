@@ -9,6 +9,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CommentSection from "./CommentSection";
 import { FcLike } from "react-icons/fc";
+import { ReportDialog } from "../../u/[username]/components/ReportDialog";
+import { ReportPost } from "./ReportPost";
 
 const ArticleContainer = () => {
   const { slug } = useParams();
@@ -89,8 +91,9 @@ const ArticleContainer = () => {
         {data && <Editor data={data} editorblock="editorjs-container" />}
       </div>
       <div className="flex gap-x-2 pl-8">
-        <FcLike size={24} />
+        {/* <FcLike size={24} /> */}
         <CommentSection postId={metaData.postId} />
+        <ReportPost reportedUserId={"profileUserId"} />
       </div>
     </div>
   );
