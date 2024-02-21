@@ -27,6 +27,7 @@ const formSchema = z.object({
       "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
     ),
 });
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,6 +49,9 @@ const RegisterForm = () => {
       router.push(`/enter-otp?email=${response.data.email}`);
     } catch (error) {
       console.error(error);
+      toast("Registration failed", {
+        description: "Something went wrong while registering",
+      });
     }
   }
   return (
