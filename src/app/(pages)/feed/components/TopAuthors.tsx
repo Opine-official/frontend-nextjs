@@ -36,7 +36,7 @@ const TopAuthors = () => {
       <CardContent>
         {authors.map((author, index) => (
           <p key={index}>
-            <Link href={`/${author.username}`}>{author.name}</Link>
+            <Link href={`/u/${author.username}`}>{author.name}</Link>
           </p>
         ))}
       </CardContent>
