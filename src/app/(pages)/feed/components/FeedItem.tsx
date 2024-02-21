@@ -41,39 +41,42 @@ const FeedItem = ({
   const date = dayjs(postedOn).fromNow();
 
   return (
-    <Link href={`/${slug}`}>
-      <Card className="w-[800px] hover:shadow-lg transition duration-500">
-        <CardHeader>
-          <div className="flex gap-x-2 items-center mb-4">
-            <Avatar>
-              <AvatarImage src={user.profile ? user.profile : ""} />
-              <AvatarFallback>{user?.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <div className="flex gap-x-2 justify-between items-center">
+    <Card className="w-[800px] hover:shadow-lg transition duration-500">
+      <CardHeader>
+        <div className="flex gap-x-2 items-center mb-4">
+          <Avatar>
+            <AvatarImage src={user.profile ? user.profile : ""} />
+            <AvatarFallback>{user?.name[0]}</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <div className="flex gap-x-2 justify-between items-center">
+              <Link href={`/u/${user?.username}`}>
                 <span className="text-sm">{user?.name}</span>
-                <p className="text-xs text-gray-500">{date}</p>
-              </div>
-              <span className="text-sm text-gray-500">
-                {user?.bio || "Code whisperer"}
-              </span>
+              </Link>
+              <p className="text-xs text-gray-500">{date}</p>
             </div>
+            <span className="text-sm text-gray-500">
+              {user?.bio || "Code whisperer"}
+            </span>
           </div>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </CardHeader>
-        <CardFooter className="flex justify-between">
+        </div>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardFooter className="flex justify-between">
+        <Link href={`/${slug}`}>
           <Button>Read more</Button>
-          <div className="flex space-x-2">
-            {tags.map((tag, index) => (
-              <Badge key={index} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </CardFooter>
-      </Card>
-    </Link>
+        </Link>
+
+        <div className="flex space-x-2">
+          {tags.map((tag, index) => (
+            <Link key={tag} href={`/channel/${tag}`}>
+              <Badge variant="secondary">{tag}</Badge>
+            </Link>
+          ))}
+        </div>
+      </CardFooter>
+    </Card>
   );
 };
 
