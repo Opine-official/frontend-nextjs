@@ -10,26 +10,32 @@ import axiosInstance from "../helpers/axiosInstance";
 import { MARK_AS_READ } from "../helpers/endpoints";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 function NotificationItem({ notification }: any) {
   return (
-    <div
-      className={`flex items-start justify-between p-4 border-b ${
-        notification.read ? "bg-gray-100" : "bg-white"
-      }`}
-    >
-      <div>
-        <p className="font-bold text-lg mb-1">{notification.type}</p>
-        <p className="text-sm text-gray-600">{notification.message}</p>
+    <Link href={`/${notification.entityData.slug}`}>
+      <div
+        className={`flex items-start justify-between p-4 border-b ${
+          notification.read ? "bg-gray-100" : "bg-white"
+        }`}
+      >
+        <div>
+          <p className="font-bold text-lg mb-1">{notification.type}</p>
+          <p className="text-sm text-gray-600">{notification.message}</p>
+          <p className="text-sm text-gray-600">
+            {notification.entityData.title}
+          </p>
+        </div>
+        <div className="flex items-center">
+          {notification.read ? (
+            <AiOutlineCheckCircle className="text-green-500" />
+          ) : (
+            <AiOutlineCloseCircle className="text-red-500" />
+          )}
+        </div>
       </div>
-      <div className="flex items-center">
-        {notification.read ? (
-          <AiOutlineCheckCircle className="text-green-500" />
-        ) : (
-          <AiOutlineCloseCircle className="text-red-500" />
-        )}
-      </div>
-    </div>
+    </Link>
   );
 }
 export function NotificationPopover() {
