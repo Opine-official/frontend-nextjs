@@ -1,14 +1,26 @@
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "./Header";
 import Post from "./PostItem";
 import { useProfile } from "../provider/ProfileProvider";
+import { Rings } from "react-loader-spinner";
 
 const Profile = () => {
   const { user, posts } = useProfile();
 
   if (!user) {
-    return <span>Loading...</span>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Rings
+          visible={true}
+          height="80"
+          width="80"
+          color="#000"
+          ariaLabel="rings-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
   }
 
   return (

@@ -1,10 +1,9 @@
 "use client";
-import { Rings, RotatingSquare } from "react-loader-spinner";
+import { Rings } from "react-loader-spinner";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import useUser from "./hooks/useUser";
 import { useRouter } from "next/navigation";
-import { Features } from "./components/Features";
 
 export default function Home() {
   const { user, isLoading } = useUser();

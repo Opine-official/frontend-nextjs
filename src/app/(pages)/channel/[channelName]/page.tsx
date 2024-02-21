@@ -12,6 +12,7 @@ import PostItem from "./components/PostItem";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import useUser from "@/app/hooks/useUser";
+import { Rings } from "react-loader-spinner";
 
 export default function Page() {
   const [posts, setPosts] = useState([]);
@@ -113,7 +114,19 @@ export default function Page() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Rings
+          visible={true}
+          height="80"
+          width="80"
+          color="#000"
+          ariaLabel="rings-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
   }
 
   if (posts?.length === 0) {
