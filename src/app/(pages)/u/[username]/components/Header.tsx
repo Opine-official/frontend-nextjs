@@ -1,12 +1,5 @@
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  FaFlag,
-  FaInstagram,
-  FaLink,
-  FaLinkedin,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaInstagram, FaLink, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { IconBaseProps } from "react-icons";
 import { ReportDialog } from "./ReportDialog";
 import useUser from "@/app/hooks/useUser";
@@ -45,7 +38,7 @@ const Header = ({ user }: Props) => {
       <div className="flex-1">
         <h1 className="text-2xl font-bold">{`${user.name}`}</h1>
         <p className="text-sm text-gray-500">{`@${user.username}`}</p>
-        <p className="mt-1 text-sm">{`${user.bio}`}</p>
+        {user.bio && <p className="mt-1 text-sm">{`${user.bio}`}</p>}
       </div>
       <div className="flex space-x-2">
         <div className="flex space-x-2">
