@@ -4,6 +4,7 @@ import { useState } from "react";
 import CategoryManagement from "./CategoryManagement/CategoryManagement";
 import ChannelManagement from "./ChannelManagement/ChannelManagement";
 import UserManagement from "./UserManagement/UserManagement";
+import ArticleManagement from "./ArticleManagement/ArticleManagement";
 
 type Props = {};
 
@@ -14,6 +15,8 @@ export const VerticalTab = (props: Props) => {
     switch (currentTab) {
       case "user-management":
         return <UserManagement />;
+      case "article-management":
+        return <ArticleManagement />;
       case "category-management":
         return <CategoryManagement />;
       case "channel-management":
@@ -35,6 +38,15 @@ export const VerticalTab = (props: Props) => {
           onClick={() => setCurrentTab("user-management")}
         >
           User Management
+        </Button>
+        <Button
+          className={`block w-full text-right ${
+            currentTab === "article-management" ? "bg-gray-200" : ""
+          }`}
+          variant="ghost"
+          onClick={() => setCurrentTab("article-management")}
+        >
+          Article Management
         </Button>
         <Button
           className={`block w-full text-right ${
