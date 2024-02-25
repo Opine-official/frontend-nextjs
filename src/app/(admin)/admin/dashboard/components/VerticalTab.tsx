@@ -5,6 +5,7 @@ import CategoryManagement from "./CategoryManagement/CategoryManagement";
 import ChannelManagement from "./ChannelManagement/ChannelManagement";
 import UserManagement from "./UserManagement/UserManagement";
 import ArticleManagement from "./ArticleManagement/ArticleManagement";
+import Dashboard from "./Dashboard/Dashboard";
 
 type Props = {};
 
@@ -13,6 +14,8 @@ export const VerticalTab = (props: Props) => {
 
   const renderContent = () => {
     switch (currentTab) {
+      case "dashboard":
+        return <Dashboard />;
       case "user-management":
         return <UserManagement />;
       case "article-management":
@@ -30,6 +33,15 @@ export const VerticalTab = (props: Props) => {
   return (
     <div className="mt-12 flex flex-col md:flex-row">
       <div className="flex flex-col w-full space-y-4 py-4 pr-4 md:w-64 md:border-r md:pr-8">
+        <Button
+          className={`block w-full text-right ${
+            currentTab === "dashboard" ? "bg-gray-200" : ""
+          }`}
+          variant="ghost"
+          onClick={() => setCurrentTab("dashboard")}
+        >
+          Dashboard
+        </Button>
         <Button
           className={`block w-full text-right ${
             currentTab === "user-management" ? "bg-gray-200" : ""

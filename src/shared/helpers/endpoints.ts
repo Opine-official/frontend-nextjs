@@ -64,3 +64,6 @@ export const GET_THREADS = "/threads/";
 // Notification related endpoints
 export const GET_NOTIFICATIONS = "/notification/user";
 export const MARK_AS_READ = "/notification/markAsRead";
+
+// Analytics related endpoints
+export const GET_REGISTRATION_ANALYTICS = '/user/registrationAnalytics';
