@@ -34,16 +34,16 @@ export const VerticalTab = (props: Props) => {
     <div className="mt-12 flex flex-col md:flex-row">
       <div className="flex flex-col w-full space-y-4 py-4 pr-4 md:w-64 md:border-r md:pr-8">
         <Button
-          className={`block w-full text-right ${
+          className={`block w-full text-left ${
             currentTab === "dashboard" ? "bg-gray-200" : ""
           }`}
           variant="ghost"
           onClick={() => setCurrentTab("dashboard")}
         >
-          Dashboard
+          Overview
         </Button>
         <Button
-          className={`block w-full text-right ${
+          className={`block w-full text-left ${
             currentTab === "user-management" ? "bg-gray-200" : ""
           }`}
           variant="ghost"
@@ -52,7 +52,7 @@ export const VerticalTab = (props: Props) => {
           User Management
         </Button>
         <Button
-          className={`block w-full text-right ${
+          className={`block w-full text-left ${
             currentTab === "article-management" ? "bg-gray-200" : ""
           }`}
           variant="ghost"
@@ -61,7 +61,7 @@ export const VerticalTab = (props: Props) => {
           Article Management
         </Button>
         <Button
-          className={`block w-full text-right ${
+          className={`block w-full text-left ${
             currentTab === "category-management" ? "bg-gray-200" : ""
           }`}
           variant="ghost"
@@ -70,7 +70,7 @@ export const VerticalTab = (props: Props) => {
           Category Management
         </Button>
         <Button
-          className={`block w-full text-right ${
+          className={`block w-full text-left ${
             currentTab === "channel-management" ? "bg-gray-200" : ""
           }`}
           variant="ghost"

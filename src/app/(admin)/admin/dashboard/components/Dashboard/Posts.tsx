@@ -1,19 +1,20 @@
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
+import { Bar, BarChart } from "recharts";
 import { CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "@/shared/helpers/axiosInstance";
-import { GET_REGISTRATION_ANALYTICS } from "@/shared/helpers/endpoints";
+import { GET_POSTS_ANALYTICS } from "@/shared/helpers/endpoints";
 
 type Props = {};
 
-const Registration = (props: Props) => {
-  const [registrationData, setRegistrationData] = useState([]);
+const Posts = (props: Props) => {
+  const [postData, setPostData] = useState([]);
 
-  async function getRegistrationAnalytics() {
+  async function getPostAnalytics() {
     try {
-      const response = await axiosInstance.get(GET_REGISTRATION_ANALYTICS);
+      const response = await axiosInstance.get(GET_POSTS_ANALYTICS);
 
-      const data = response.data.registrationAnalytics.map((data: any) => {
+      console.log(response.data);
+      const data = response.data.postAnalytics.map((data: any) => {
         let date = new Date(data.date);
         return {
           date: date.toLocaleDateString("en-US", {
@@ -25,20 +26,19 @@ const Registration = (props: Props) => {
         };
       });
 
-      console.log(response.data);
-      setRegistrationData(data);
+      setPostData(data);
     } catch (e) {
       console.log(e);
     }
   }
 
   useEffect(() => {
-    getRegistrationAnalytics();
+    getPostAnalytics();
   }, []);
 
   return (
     <div>
-      <BarChart width={500} height={250} data={registrationData}>
+      <BarChart width={500} height={250} data={postData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
         <YAxis dataKey="count" />
@@ -51,4 +51,4 @@ const Registration = (props: Props) => {
   );
 };
 
-export default Registration;
+export default Posts;
