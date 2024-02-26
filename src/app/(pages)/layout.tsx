@@ -10,9 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
 
-  if (!user) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Rings

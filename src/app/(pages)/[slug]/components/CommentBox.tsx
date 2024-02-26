@@ -39,8 +39,8 @@ const SingleComment = ({
 
   const date = dayjs(createdAt).fromNow();
   const { user } = useUser();
-  const isLoggedInCurrentUser = user.userId === userId;
-  const isLoggedIn = !!user.userId;
+  const isLoggedInCurrentUser = user?.userId === userId;
+  const isLoggedIn = !!user?.userId;
 
   const toggleReplyBox = () => {
     setShowReplyBox(!showReplyBox);
@@ -86,24 +86,27 @@ const SingleComment = ({
         <div className="text-sm text-gray-500 dark:text-gray-400">{date}</div>
       </div>
       <p className="mt-4">{content}</p>
-      {isLoggedIn && (
-        <div className="mt-4">
-          {isLoggedInCurrentUser && (
-            <>
-              <button className="mr-2">
-                <EditDialog commentId={commentId} content={content} />
-              </button>
-              <button>
-                <DeleteConfirmation commentId={commentId} />
-              </button>
-            </>
-          )}
 
-          <Button className="" variant="ghost" onClick={toggleReplyBox}>
-            Show replies
-          </Button>
-        </div>
-      )}
+      <div className="mt-4">
+        {isLoggedInCurrentUser && (
+          <>
+            <button className="mr-2">
+              <EditDialog commentId={commentId} content={content} />
+            </button>
+            <button>
+              <DeleteConfirmation commentId={commentId} />
+            </button>
+          </>
+        )}
+
+        <Button
+          className={isLoggedInCurrentUser ? "" : "p-0"}
+          variant="ghost"
+          onClick={toggleReplyBox}
+        >
+          Show replies
+        </Button>
+      </div>
 
       {showReplyBox && (
         <div className="space-y-2">
@@ -155,15 +158,6 @@ interface User {
   profile: null | string;
   userId: string;
   __v: number;
-}
-
-interface Comment {
-  commentId: string;
-  postId: string;
-  content: string;
-  user: User;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export default function CommentBox({ postId }: props) {
