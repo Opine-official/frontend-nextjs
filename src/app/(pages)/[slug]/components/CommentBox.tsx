@@ -8,6 +8,12 @@ import useUser from "@/app/hooks/useUser";
 import EditDialog from "./EditDialog";
 import { useComments } from "../contexts/CommentContext";
 import DeleteConfirmation from "./DeleteConfirmation";
+import {
+  CREATE_COMMENT,
+  CREATE_REPLY,
+  GET_COMMENTS_BY_POST,
+  GET_REPLIES,
+} from "@/shared/helpers/endpoints";
 dayjs.extend(relativeTime);
 
 type singleComment = {
@@ -16,6 +22,7 @@ type singleComment = {
   content: string;
   name: string;
   userId: string;
+  postId: string;
 };
 
 const SingleComment = ({
@@ -24,10 +31,53 @@ const SingleComment = ({
   name,
   commentId,
   userId,
+  postId,
 }: singleComment) => {
+  const [showReplyBox, setShowReplyBox] = useState(false);
+  const [reply, setReply] = useState("");
+  const [replies, setReplies] = useState<any[]>([]);
+
   const date = dayjs(createdAt).fromNow();
   const { user } = useUser();
-  const isLoggedIn = user.userId === userId;
+  const isLoggedInCurrentUser = user.userId === userId;
+  const isLoggedIn = !!user.userId;
+
+  const toggleReplyBox = () => {
+    setShowReplyBox(!showReplyBox);
+  };
+
+  const fetchReplies = async () => {
+    try {
+      const response = await axiosInstance.get(GET_REPLIES(commentId));
+
+      console.log(response.data);
+      setReplies(response.data.replies);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!reply.trim()) {
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.post(CREATE_REPLY(commentId), {
+        postId: postId,
+        userId: user.userId,
+        content: reply,
+      });
+      setReply("");
+      fetchReplies();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReplies();
+  }, []);
 
   return (
     <div className="rounded-md border border-gray-200 px-4 py-2 shadow-sm dark:border-gray-800">
@@ -38,12 +88,55 @@ const SingleComment = ({
       <p className="mt-4">{content}</p>
       {isLoggedIn && (
         <div className="mt-4">
-          <button className="mr-2">
-            <EditDialog commentId={commentId} content={content} />
-          </button>
-          <button>
-            <DeleteConfirmation commentId={commentId} />
-          </button>
+          {isLoggedInCurrentUser && (
+            <>
+              <button className="mr-2">
+                <EditDialog commentId={commentId} content={content} />
+              </button>
+              <button>
+                <DeleteConfirmation commentId={commentId} />
+              </button>
+            </>
+          )}
+
+          <Button className="" variant="ghost" onClick={toggleReplyBox}>
+            Show replies
+          </Button>
+        </div>
+      )}
+
+      {showReplyBox && (
+        <div className="space-y-2">
+          {isLoggedIn && (
+            <>
+              <Textarea
+                className="min-h-[100px]"
+                id="comment"
+                placeholder="Enter your comment"
+                value={reply}
+                onChange={(e) => setReply(e.target.value)}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!reply.trim()}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </>
+          )}
+          {replies.map((comment) => (
+            <SingleComment
+              key={comment.commentId}
+              commentId={comment.commentId}
+              name={comment.user.name}
+              content={comment.content}
+              createdAt={comment.createdAt}
+              userId={comment.user.userId}
+              postId={postId}
+            />
+          ))}
         </div>
       )}
     </div>
@@ -79,9 +172,7 @@ export default function CommentBox({ postId }: props) {
 
   const fetchComments = async () => {
     try {
-      const response = await axiosInstance.get(
-        `/threads/comments/?postId=${postId}`
-      );
+      const response = await axiosInstance.get(GET_COMMENTS_BY_POST(postId));
       setComments(response.data.comments);
     } catch (error) {
       console.error(error);
@@ -94,7 +185,7 @@ export default function CommentBox({ postId }: props) {
     }
 
     try {
-      const response = await axiosInstance.post("/threads/comment", {
+      const response = await axiosInstance.post(CREATE_COMMENT, {
         postId: postId,
         content: comment,
       });
@@ -134,6 +225,7 @@ export default function CommentBox({ postId }: props) {
             content={comment.content}
             createdAt={comment.createdAt}
             userId={comment.user.userId}
+            postId={postId}
           />
         ))}
       </div>

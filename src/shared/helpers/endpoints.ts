@@ -45,10 +45,12 @@ export const REPORT_POST = "/post/report";
 
 // Comment related endpoints
 export const CREATE_COMMENT = "/threads/comment";
+export const CREATE_REPLY = (commentId: string) => `/threads/reply/?commentId=${commentId}`;
 export const GET_COMMENTS_BY_POST = (postId: string) => `/threads/comments/?postId=${postId}`;
 export const DELETE_COMMENT = (commentId: string) => `/threads/comment/?commentId=${commentId}`;
 export const UPDATE_COMMENT = "/threads/comment";
 export const GET_COMMENTS_AND_POSTS_BY_USER = (userId: string) => `/threads/commentsAndPosts/?userId=${userId}`;
+export const GET_REPLIES = (commentId: string) => `/threads/replies/?commentId=${commentId}`;
 
 // Feed related endpoints
 export const GET_FEED = (userId: string) => `/feed/?userId=${userId}`;
