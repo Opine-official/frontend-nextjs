@@ -1,13 +1,15 @@
 import { Button } from "@/components/ui/button";
-import useUser from "@/app/hooks/useUser";
 import PostSettings from "./PostSettings";
 import useEditor from "../hooks/useEditor";
+import { OpenAiDialog } from "./OpenAIDialog";
 
 const ActionsTray = () => {
-  const { saveStory, isNewPost } = useEditor();
+  const { saveStory, isNewPost, metaData } = useEditor();
+  console.log(metaData);
 
   return (
     <div className="fixed z-10 inset-x-0 bottom-0 bg-gray-200 p-4 flex justify-center items-center space-x-6 shadow-md">
+      <OpenAiDialog metaData={metaData} />
       <Button variant="outline" onClick={() => saveStory({ isDraft: true })}>
         Save as draft
       </Button>
