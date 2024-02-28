@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { DELETE_CATEGORY } from "@/shared/helpers/endpoints";
 
 import React from "react";
 import { FiTrash2 } from "react-icons/fi";
@@ -22,9 +23,7 @@ type Props = {
 function DeleteCategoryAlert({ refreshData, category }: any) {
   async function deleteCategory() {
     try {
-      const response = await axiosInstance.delete(
-        `/channel/category/?categoryId=${category.id}`
-      );
+      const response = await axiosInstance.delete(DELETE_CATEGORY(category.id));
       refreshData();
     } catch (e) {
       console.log(e);
