@@ -38,6 +38,7 @@ const Posts = (props: Props) => {
 
   return (
     <div>
+      <h1 className="text-center mb-2 font-thin text-xl">Posts / day</h1>
       <BarChart width={500} height={250} data={postData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />

@@ -74,3 +74,7 @@ export const MARK_AS_READ = "/notification/markAsRead";
 export const GET_REGISTRATION_ANALYTICS = '/user/registrationAnalytics';
 export const GET_POSTS_ANALYTICS = '/post/analytics';
 export const GET_COMMENT_ANALYTICS = '/threads/analytics';
+
+// openAi
+
+export const GENERATE_OPENAI_COMPLETIONS = "/post/generateOpenaiCompletions";
