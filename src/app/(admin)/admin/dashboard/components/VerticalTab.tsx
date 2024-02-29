@@ -10,7 +10,7 @@ import Dashboard from "./Dashboard/Dashboard";
 type Props = {};
 
 export const VerticalTab = (props: Props) => {
-  const [currentTab, setCurrentTab] = useState("user-management");
+  const [currentTab, setCurrentTab] = useState("dashboard");
 
   const renderContent = () => {
     switch (currentTab) {

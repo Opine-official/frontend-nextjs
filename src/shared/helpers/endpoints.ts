@@ -10,6 +10,8 @@ export const RESET_PASSWORD = "/user/resetPassword";
 export const GET_USER = "/user/";
 export const GET_USER_BY_USERNAME = (username: string) => `/user/${username}`;
 export const REPORT_USER = "/user/report";
+export const GET_REPORTS = "/user/reports";
+export const BAN_USER = "/user/ban";
 
 // Admin related endpoints
 export const ADMIN_LOGIN = "/admin/login";

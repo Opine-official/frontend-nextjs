@@ -1,6 +1,5 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import BanUserAlert from "./BanUserAlert";
 import InspectDialog from "./InspectDialog";
 
 export type Category = {
@@ -27,6 +26,14 @@ export const columns = (refreshData: () => void): ColumnDef<Category>[] => [
     header: "User",
   },
   { accessorKey: "reporter", header: "Reported By" },
+  {
+    accessorKey: "date",
+    header: "Date",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
   {
     id: "actions",
     header: "Actions",

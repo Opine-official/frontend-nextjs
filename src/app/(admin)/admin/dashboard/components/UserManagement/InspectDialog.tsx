@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import LatestPost from "./LatestPosts";
 import LatestComments from "./LatestComments";
+import ReportDetails from "./ReportDetails";
 
 type Props = {
   report: any;
@@ -91,12 +92,13 @@ const InspectDialog = ({ report }: Props) => {
             <ProfileView user={user} />
             <LatestPost posts={posts} />
             <LatestComments comments={comments} />
+            <ReportDetails report={report} />
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>
-          <Button className="w-[100px]">Ban</Button>
+          {/* <Button className="w-[100px]">Ban</Button> */}
           <DrawerClose>
-            <Button variant="outline">Cancel</Button>
+            {/* <Button variant="outline">Cancel</Button> */}
           </DrawerClose>
         </DrawerFooter>
         {/* </div> */}

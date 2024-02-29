@@ -2,6 +2,7 @@ import axiosInstance from "@/shared/helpers/axiosInstance";
 import { DataTable } from "../DataTable/data-table";
 import { columns } from "./columns";
 import { useEffect, useState } from "react";
+import { GET_REPORTS } from "@/shared/helpers/endpoints";
 
 type Props = {};
 
@@ -10,7 +11,7 @@ const UserManagement = (props: Props) => {
 
   async function getData() {
     try {
-      const response = await axiosInstance.get("/user/reports");
+      const response = await axiosInstance.get(GET_REPORTS);
 
       console.log(response.data);
 
@@ -18,8 +19,10 @@ const UserManagement = (props: Props) => {
         return {
           id: usr.userReportId,
           reason: usr.reason,
-          reporter: usr.reporterUser.username,
+          reporter: usr.reportedUser.username,
           reported: usr.reportedUser.username,
+          date: new Date(usr.createdAt).toLocaleDateString(),
+          status: usr.isUserBanned ? "Banned" : "Not Banned",
         };
       });
 
