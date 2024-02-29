@@ -10,6 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import axiosInstance from "@/shared/helpers/axiosInstance";
+import { DELETE_CHANNEL } from "@/shared/helpers/endpoints";
 
 import React from "react";
 import { FiTrash2 } from "react-icons/fi";
@@ -22,9 +23,7 @@ type Props = {
 function DeleteChannelAlert({ refreshData, channel }: any) {
   async function deleteChannel() {
     try {
-      const response = await axiosInstance.delete(
-        `/channel/?channelId=${channel.id}`
-      );
+      const response = await axiosInstance.delete(DELETE_CHANNEL(channel.id));
       refreshData();
     } catch (e) {
       console.log(e);
