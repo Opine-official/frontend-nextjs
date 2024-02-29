@@ -28,7 +28,7 @@ export const GET_ALL_CHANNELS = "/channel/channels";
 export const GET_CHANNEL = (channelName: string, userId: string) => `/channel/?channelName=${channelName}&&userId=${userId}`;
 export const CREATE_CHANNEL = "/channel/";
 export const UPDATE_CHANNEL = (channelId: string) => `/channel/channel/?channelId=${channelId}`;
-export const DELETE_CHANNEL = (channelId: string) => `/channel/channel/?channelId=${channelId}`;
+export const DELETE_CHANNEL = (channelId: string) => `/channel/?channelId=${channelId}`;
 export const GET_CATEGORIES_BY_CHANNEL = (channelId: string) => `/channel/categoriesByChannel/?channelId=${channelId}`;
 export const REMOVE_CATEGORY_FROM_CHANNEL = "/channel/categories/remove-channel/";
 export const GET_POSTS_BY_CHANNEL = (channelName: string) => `/channel/postsByChannel/?channelName=${channelName}`
@@ -44,6 +44,7 @@ export const DELETE_POST = (slug: string) => `/post/?slug=${slug}`;
 export const GET_POSTS_BY_USER = (userId: string) => `/post/postsByUser/?userId=${userId}`;
 export const GET_POSTS_BY_USERNAME = (username: string) => `/post/getPostsByUsername/?username=${username}`;
 export const REPORT_POST = "/post/report";
+export const GET_POST_REPORTS = "/post/reports";
 
 // Comment related endpoints
 export const CREATE_COMMENT = "/threads/comment";

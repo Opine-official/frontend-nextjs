@@ -1,7 +1,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import BanUserAlert from "./BanUserAlert";
-import InspectDialog from "./InspectDialog";
+import { Button } from "@/components/ui/button";
+import DeletePostAlert from "./DeletePostAlert";
 
 export type Category = {
   id: string;
@@ -10,7 +10,18 @@ export type Category = {
 };
 
 const ActionCell = ({ report, refreshData }: any) => {
-  return <InspectDialog report={report} />;
+  console.log(report);
+  return (
+    <div className="flex">
+      <Button
+        onClick={() => window.open(`https://opine/${report.slug}`)}
+        variant="link"
+      >
+        View
+      </Button>
+      <DeletePostAlert refreshData={refreshData} report={report} />
+    </div>
+  );
 };
 
 export const columns = (refreshData: () => void): ColumnDef<Category>[] => [
@@ -23,10 +34,14 @@ export const columns = (refreshData: () => void): ColumnDef<Category>[] => [
     header: "Reason",
   },
   {
-    accessorKey: "reported",
-    header: "User",
+    accessorKey: "title",
+    header: "Title",
   },
   { accessorKey: "reporter", header: "Reported By" },
+  {
+    accessorKey: "slug",
+    header: "Slug",
+  },
   {
     id: "actions",
     header: "Actions",
