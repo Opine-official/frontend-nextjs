@@ -35,6 +35,7 @@ export const GET_POSTS_BY_CHANNEL = (channelName: string) => `/channel/postsByCh
 export const SEARCH_CHANNELS = (searchTerm: string) => `/channel/search/channels/?searchTerm=${searchTerm}`
 export const SUBSCRIBE_CHANNEL = "/channel/subscribe";
 export const UNSUBSCRIBE_CHANNEL = (userId: string, channelId: string) => `/channel/subscribe/?userId=${userId}&&channelId=${channelId}`
+export const GET_TOP_CHANNELS = "/channel/topChannels";
 
 // Post related endpoints
 export const CREATE_POST = "/post";
