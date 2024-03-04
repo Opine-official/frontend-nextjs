@@ -38,8 +38,7 @@ export default function BanDialog({ report }: any) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently ban the account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently ban the account.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

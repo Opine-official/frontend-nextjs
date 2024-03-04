@@ -6,6 +6,7 @@ type Props = {
 };
 
 const ReportDetails = ({ report }: Props) => {
+  console.log(report);
   return (
     <div className="px-6">
       <h2 className="text-2xl font-bold mb-10">Report Summary</h2>
@@ -17,7 +18,7 @@ const ReportDetails = ({ report }: Props) => {
           <b>Reason:</b> {report.reason}
         </p>
         <p>
-          <b>Reported on:</b> {report.createdAt}
+          <b>Reported on:</b> {report.date}
         </p>
         <BanDialog report={report} />
       </div>
