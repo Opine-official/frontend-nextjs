@@ -12,14 +12,19 @@ import {
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/shared/helpers/axiosInstance";
 import { BAN_USER } from "@/shared/helpers/endpoints";
+import { useState } from "react";
 
-export default function BanDialog({ report }: any) {
+export default function BanDialog({ report, refreshData }: any) {
+  const [isBanned, setIsBanned] = useState(report.status === "Banned");
+
   async function banUser() {
     try {
       const response = await axiosInstance.post(BAN_USER, {
         username: report.reported,
       });
       console.log(response.data);
+      refreshData();
+      setIsBanned(true);
     } catch (e: unknown) {
       console.error(e);
     }
@@ -27,7 +32,7 @@ export default function BanDialog({ report }: any) {
 
   return (
     <AlertDialog>
-      {report.status !== "Banned" ? (
+      {!isBanned ? (
         <AlertDialogTrigger>
           <Button>Ban User</Button>
         </AlertDialogTrigger>

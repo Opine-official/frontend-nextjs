@@ -9,7 +9,7 @@ export type Category = {
 };
 
 const ActionCell = ({ report, refreshData }: any) => {
-  return <InspectDialog report={report} />;
+  return <InspectDialog report={report} refreshData={refreshData} />;
 };
 
 export const columns = (refreshData: () => void): ColumnDef<Category>[] => [

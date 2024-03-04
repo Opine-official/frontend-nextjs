@@ -23,9 +23,10 @@ import ReportDetails from "./ReportDetails";
 
 type Props = {
   report: any;
+  refreshData: any;
 };
 
-const InspectDialog = ({ report }: Props) => {
+const InspectDialog = ({ report, refreshData }: Props) => {
   console.log(report);
 
   const [user, setUser] = useState<any>(null);
@@ -92,7 +93,7 @@ const InspectDialog = ({ report }: Props) => {
             <ProfileView user={user} />
             <LatestPost posts={posts} />
             <LatestComments comments={comments} />
-            <ReportDetails report={report} />
+            <ReportDetails report={report} refreshData={refreshData} />
           </DrawerDescription>
         </DrawerHeader>
         <DrawerFooter>

@@ -3,9 +3,10 @@ import BanDialog from "./BanDialog";
 
 type Props = {
   report: any;
+  refreshData: any;
 };
 
-const ReportDetails = ({ report }: Props) => {
+const ReportDetails = ({ report, refreshData }: Props) => {
   console.log(report);
   return (
     <div className="px-6">
@@ -20,7 +21,7 @@ const ReportDetails = ({ report }: Props) => {
         <p>
           <b>Reported on:</b> {report.date}
         </p>
-        <BanDialog report={report} />
+        <BanDialog report={report} refreshData={refreshData} />
       </div>
     </div>
   );
