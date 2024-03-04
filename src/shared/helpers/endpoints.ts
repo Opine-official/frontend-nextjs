@@ -51,6 +51,7 @@ export const GET_POST_REPORTS = "/post/reports";
 export const CREATE_COMMENT = "/threads/comment";
 export const CREATE_REPLY = (commentId: string) => `/threads/reply/?commentId=${commentId}`;
 export const GET_COMMENTS_BY_POST = (postId: string) => `/threads/comments/?postId=${postId}`;
+export const GET_THREAD_COMMENTS_BY_POST = (postId: string, page: number) => `/threads/threadComments/?postId=${postId}&&page=${page}`
 export const DELETE_COMMENT = (commentId: string) => `/threads/comment/?commentId=${commentId}`;
 export const UPDATE_COMMENT = "/threads/comment";
 export const GET_COMMENTS_AND_POSTS_BY_USER = (userId: string) => `/threads/commentsAndPosts/?userId=${userId}`;

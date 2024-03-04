@@ -21,6 +21,7 @@ type singleComment = {
   createdAt: string;
   content: string;
   name: string;
+  isReply: boolean;
   userId: string;
   postId: string;
 };
@@ -32,6 +33,7 @@ const SingleComment = ({
   commentId,
   userId,
   postId,
+  isReply = false,
 }: singleComment) => {
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [reply, setReply] = useState("");
@@ -99,13 +101,15 @@ const SingleComment = ({
           </>
         )}
 
-        <Button
-          className={isLoggedInCurrentUser ? "" : "p-0"}
-          variant="ghost"
-          onClick={toggleReplyBox}
-        >
-          Show replies
-        </Button>
+        {!isReply && (
+          <Button
+            className={isLoggedInCurrentUser ? "" : "p-0"}
+            variant="ghost"
+            onClick={toggleReplyBox}
+          >
+            Show replies
+          </Button>
+        )}
       </div>
 
       {showReplyBox && (
@@ -138,6 +142,7 @@ const SingleComment = ({
               createdAt={comment.createdAt}
               userId={comment.user.userId}
               postId={postId}
+              isReply={true}
             />
           ))}
         </div>
@@ -220,6 +225,7 @@ export default function CommentBox({ postId }: props) {
             createdAt={comment.createdAt}
             userId={comment.user.userId}
             postId={postId}
+            isReply={false}
           />
         ))}
       </div>
