@@ -1,0 +1,62 @@
+/* Heading styles */
+.editor h1 {
+  font-size: 2em;
+  color: #333;
+  font-weight: bold;
+}
+
+.editor h2 {
+  font-size: 1.75em;
+  color: #333;
+  font-weight: bold;
+}
+
+.editor h3 {
+  font-size: 1.5em;
+  color: #333;
+  font-weight: bold;
+}
+
+.editor h4 {
+  font-size: 1.25em;
+  color: #333;
+  font-weight: bold;
+}
+
+.editor h5 {
+  font-size: 1em;
+  color: #333;
+  font-weight: bold;
+}
+
+.editor h6 {
+  font-size: 0.875em;
+  color: #333;
+  font-weight: bold;
+}
+
+/* List styles */
+.editor ul,
+ol {
+  padding-left: 20px;
+}
+
+.editor ul li,
+ol li {
+  line-height: 1.5;
+}
+
+/* Blockquote styles */
+.editor blockquote {
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 1.25em;
+  border-left: 5px solid #333;
+}
+
+/* Paragraph styles */
+.editor p {
+  margin-bottom: 1.5em;
+  line-height: 1.5;
+  color: #333;
+}
