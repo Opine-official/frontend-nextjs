@@ -66,7 +66,9 @@ export const SEARCH = (query: string) => `/search/?q=${query}`;
 export const SEARCH_TAG = (tag: string) => `/search/tag/?tag=${tag}`;
 
 // Thread related endpoints
-export const GET_THREADS = "/threads/";
+export const GET_THREADS = (userId: string) => `/threads/?userId=${userId}`;
+export const UPVOTE_THREAD = "/threads/upvote";
+export const DOWNVOTE_THREAD = "/threads/downvote";
 
 // Notification related endpoints
 export const GET_NOTIFICATIONS = "/notification/user";
@@ -78,5 +80,4 @@ export const GET_POSTS_ANALYTICS = '/post/analytics';
 export const GET_COMMENT_ANALYTICS = '/threads/analytics';
 
 // openAi
-
 export const GENERATE_OPENAI_COMPLETIONS = "/post/generateOpenaiCompletions";
