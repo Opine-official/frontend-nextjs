@@ -5,8 +5,10 @@ import axiosInstance from "@/shared/helpers/axiosInstance";
 import {
   CREATE_COMMENT,
   CREATE_REPLY,
+  DOWNVOTE_THREAD,
   GET_REPLIES,
   GET_THREAD_COMMENTS_BY_POST,
+  UPVOTE_THREAD,
 } from "@/shared/helpers/endpoints";
 import { useEffect, useState } from "react";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
@@ -19,8 +21,13 @@ type Props = {
   bio: string;
   title: string;
   description: string;
+  threadId: string;
   profile: string | null;
   comments: any;
+  hasUpVoted: boolean;
+  hasDownVoted: boolean;
+  upVotes: number;
+  downVotes: number;
 };
 
 const SingleComment = ({
@@ -147,13 +154,25 @@ const Thread = ({
   bio,
   title,
   description,
+  threadId,
   profile,
   comments,
+  hasUpVoted,
+  hasDownVoted,
+  upVotes,
+  downVotes,
 }: Props) => {
   const [comment, setComment] = useState("");
   const [page, setPage] = useState(1);
   const [commentsData, setCommentsData] = useState<any[]>([]);
   const [hasMoreComments, setHasMoreComments] = useState(true);
+  const [hasUpVotedState, setHasUpVotedState] = useState(hasUpVoted);
+  const [hasDownVotedState, setHasDownVotedState] = useState(hasDownVoted);
+  const [upVotesCount, setUpVotesCount] = useState(upVotes);
+  const [downVotesCount, setDownVotesCount] = useState(downVotes);
+
+  const { user } = useUser();
+  const userId = user?.userId;
 
   async function getComments() {
     try {
@@ -192,13 +211,51 @@ const Thread = ({
     }
   }
 
+  async function upVoteThread() {
+    try {
+      const response = await axiosInstance.post(UPVOTE_THREAD, {
+        threadId: threadId,
+        userId: userId,
+      });
+      setHasUpVotedState(!hasUpVotedState);
+      setHasDownVotedState(false);
+      setUpVotesCount(response.data.votes.upVotes);
+      setDownVotesCount(response.data.votes.downVotes);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function downVoteThread() {
+    try {
+      const response = await axiosInstance.post(DOWNVOTE_THREAD, {
+        threadId: threadId,
+        userId: userId,
+      });
+      setHasDownVotedState(!hasDownVotedState);
+      setHasUpVotedState(false);
+      setUpVotesCount(response.data.votes.upVotes);
+      setDownVotesCount(response.data.votes.downVotes);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     getComments();
   }, [page]);
 
   return (
     <div className="flex items-top">
-      <AiOutlineUp className="cursor-pointer text-4xl p-2 m-2 bg-black text-white rounded-full mt-20" />
+      <div className="flex flex-col items-center mr-4">
+        <AiOutlineUp
+          onClick={upVoteThread}
+          className={`cursor-pointer text-4xl p-2 m-2 text-white rounded-full mt-20 ${
+            hasUpVotedState ? "bg-green-700" : "bg-black"
+          }`}
+        />
+        <span className="text-black text-lg">{upVotesCount}</span>
+      </div>
       <div className="max-w-xl bg-white p-6 rounded-lg shadow">
         <div className="flex items-center space-x-4">
           <Avatar>
@@ -253,7 +310,15 @@ const Thread = ({
           )}
         </div>
       </div>
-      <AiOutlineDown className="cursor-pointer text-4xl p-2 m-2 bg-black text-white rounded-full mt-20" />
+      <div className="flex flex-col items-center mr-4">
+        <AiOutlineDown
+          className={`cursor-pointer text-4xl p-2 m-2 text-white rounded-full mt-20 ${
+            hasDownVotedState ? "bg-red-700" : "bg-black"
+          }`}
+          onClick={downVoteThread}
+        />
+        <span className="text-black text-lg">{downVotesCount}</span>
+      </div>
     </div>
   );
 };
