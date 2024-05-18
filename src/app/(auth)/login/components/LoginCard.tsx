@@ -27,7 +27,7 @@ const LoginCard = (props: Props) => {
         <LoginForm />
       </CardContent>
       <CardFooter className="flex flex-col justify-start items-start">
-      <Link
+        <Link
           href="/forgot-password"
           className="text-xs mt-[2px] text-gray-500 text-right"
         >
@@ -36,6 +36,11 @@ const LoginCard = (props: Props) => {
         <Link href="/register" className="text-sm text-gray-500">
           <span>Don&apos;t have an account?</span>
         </Link>
+        <div className="mt-2">
+          <p className="font-bold">Test credentials</p>
+          <p className="text-sm">Email: saravind436@gmail.com</p>
+          <p className="text-sm">Password: Scdrid$1</p>
+        </div>
       </CardFooter>
     </Card>
   );
