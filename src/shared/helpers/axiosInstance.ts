@@ -2,15 +2,17 @@ import axios from "axios";
 
 const minikube_backend = "https://opine/api";
 const gcp_backend = "https://backend.opine.ink/api";
+const aws_api_gateway =
+  "https://7zxqc7l6j8.execute-api.us-east-1.amazonaws.com/api";
 
 const axiosInstance = axios.create({
-  baseURL: gcp_backend,
+  baseURL: aws_api_gateway,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
 
 export const axiosInstanceMultipart = axios.create({
-  baseURL: gcp_backend,
+  baseURL: aws_api_gateway,
   headers: { "Content-Type": "multipart/form-data" },
   withCredentials: true,
 });
